@@ -1,0 +1,34 @@
+Package: persephone
+Title: Remote Sensing Applications in Crop Phenology
+Version: 0.0.1
+Authors@R: c(
+    person(given = "Ioannis", family = "Oikonomidis",
+           email = "goikon@math.uoa.gr", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8130-2104")),
+    person(given = "Samis", family = "Trevezas",
+           email = "strevezas@math.uoa.gr", role = c("aut", "ths")))
+Description: persephone is an R package that deals with applications in crop development.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.2
+Depends: 
+    R (>= 4.0.0)
+Imports: 
+    dplyr,
+    grDevices,
+    magrittr,
+    nlme,
+    ordinal,
+    rmarkdown,
+    slickR,
+    stats,
+    svglite,
+    utils,
+    ggplot2,
+    ggpubr,
+    beepr,
+    kableExtra,
+    rmdformats,
+    methods,
+    cronus

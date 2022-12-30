@@ -1,0 +1,50 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+ knitr::opts_chunk$set(
+   collapse = TRUE,
+   comment = "#>",
+   fig.path = "man/figures/README-",
+   out.width = "100%",
+   eval = FALSE
+ )
+```
+
+# <img src="inst/logo/logo_full.png" height="70px" alt="logo"/>
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+## Introduction
+
+The *prometheus* project applies advanced statistical methodology on remote sensing agriculture. It is composed of several R packages, as well as other elements, each one focusing on a different application.
+
+*persephone* is an R package that deals with applications in crop development.
+
+## Installation
+
+You can install the development version of persephone from github by running the following line of code:
+
+```{r}
+ devtools::install_github("thechibo/persephone")
+```
+
+It is instead recommended to install the entirety of the prometheus project. More details can be found in https://github.com/thechibo/prometheus .
+
+## Documentation
+
+Detailed documentation, along with reproducible examples, can be found in the package vignettes.
+
+```{r}
+vignette(topic = "", package = "persephone")
+```
+
+## Team
+
+The *prometheus* project is developed in the 
+[Mathematics Department](https://en.math.uoa.gr/ "Mathematics Department Homepage") of the [University of Athens](https://en.uoa.gr/ "University of Athens Homepage"). The project maintainer is [Ioannis Oikonomidis](http://users.uoa.gr/~goikon/ "Ioannis Oikonomidis Homepage"), working under the supervision of Prof. Samis Trevezas.

@@ -1,0 +1,10 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = 'center', out.height = "100%", out.width = "100%")
+
+object <- params$object
+crop <- get_crops(object)
+region <- get_region(object)
+seasons <- get_seasons(object)
+object <- fit(object)
+object <- crossval(object, maxsam = 10, seed = 1)
+```

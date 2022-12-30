@@ -1,0 +1,13 @@
+## **Fitting**
+
+```{r summary, comment = NA}
+summary(object)
+```
+
+The following graphs show the model fitting for each growing season. Real data are indicated by points, while the fitted values are connected with solid lines. The phenological stages are ordered and color-coded.
+
+<i>Note: Use the arrows to move through the graph carousel.</i>
+
+```{r fitting}
+carousel(plot, x = object)
+```

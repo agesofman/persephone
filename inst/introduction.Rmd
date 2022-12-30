@@ -1,0 +1,7 @@
+## **Introduction**
+
+Persephone is an R package implementing remote sensing applications on crop phenology. This report concerns <b>`r tolower(crop)`</b> cultivated in <b>`r stringr::str_to_title(region)`</b>. 
+
+```{r introduction, comment = NA}
+
+```

@@ -1,0 +1,26 @@
+---
+pagetitle: "Persephone Report"
+title: '<img src=`r system.file(file.path("logo", "logo_full.png"), package = "persephone")` width="40%" alt="logo"/>'
+subtitle: "Remote Sensing Applications in Crop Phenology"
+author: "I. Oikonomidis, S. Trevezas"
+date: "`r format(Sys.Date(), format = '%d-%m-%Y')`"
+output:
+  rmdformats::readthedown
+css: custom.css
+params: 
+  object: NULL
+---
+
+---
+
+```{r child = 'setup.Rmd'}
+```
+
+```{r child = 'introduction.Rmd'}
+```
+
+```{r child = 'fitting.Rmd'}
+```
+
+```{r child = 'evaluation.Rmd'}
+```

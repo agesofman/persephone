@@ -1,0 +1,72 @@
+h1, h2, h3, h4, h5, h6, legend {
+  color: #6166BD;
+}
+
+.title {
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.subtitle {
+  text-align: center;
+  color: #333333;
+}
+
+#nav-top span.glyphicon {
+    color: #6166BD;
+}
+
+#content {
+  max-width: 100%;
+  background: #FFFFFF;
+}
+
+#content h1 > img {
+  width: 400px;
+}
+
+#main h2 {
+  font-size: 30px;
+}
+
+#main p {
+  font-size: 16px;
+}
+
+#sidebar {
+  background: #FFFFFF;
+  border-right: solid 2px #6166BD;
+}
+
+#sidebar h2 {
+  background-color: #FFFFFF;
+}
+
+#sidebar a {
+  line-height: 20px;
+}
+
+#sidebar img {
+  width: 100%;
+}
+
+#sidebar a:hover {
+  background-color: #6166BD;
+  color: #FFFFFF;
+}
+
+#toc a {
+  line-height: 30px;
+  font-size: 100%;
+  color: #555555;
+}
+
+#toc ul.nav > li.active > a {
+  background-color: #CCCCCC;
+  color: #555555;
+}
+
+#postamble {
+  background: #6166BD;
+  border-top: solid 10px #7176CD;
+}

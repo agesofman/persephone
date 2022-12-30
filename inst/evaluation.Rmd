@@ -1,0 +1,9 @@
+## **Evaluation**
+
+The goal of this study is real-time crop stage percentage prediction. Model performance is evaluated with the Root Mean Square Prediction Error (RMSPE), which is estimated with Monte Carlo (or leave-group-out) cross-validation. In particular, in a single run of the Monte Carlo experiment, 75% of the growing seasons are invested in model training and the remaining 25% years are used for testing. This procedure is repeated independently  in order to estimate the RMSPE by taking into account a large subsample of the total train-test set partitions.
+
+The following graphs show the RMSPE with respect to time and phenological stage. In order to obtain a metric that summarizes model performance into a single value, the RMSPE can be averaged over time or stages respectively.
+
+```{r metrics, fig.height=3.5}
+plot_metrics(object)
+```
