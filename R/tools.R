@@ -5,9 +5,10 @@
 
 #' @title Tools
 #'
-#' @description Access PersephoneModel slots and information.
+#' @description
+#' Access PersephoneModel slots and information.
 #'
-#' @param object S4 object. A PersephoneModel or PersephoneModelList.
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param crop character. A crop of choice.
 #' @param ... extra arguments
 #'
@@ -16,6 +17,30 @@
 #'
 #' @examples
 #' \dontrun{
+#'
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Tools
 #' get_crops(object)
 #' get_region(object)
 #' get_index(object, crop = "Corn")

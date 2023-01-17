@@ -1,6 +1,6 @@
 ---
 pagetitle: "Persephone Report"
-title: '<img src=`r system.file(file.path("logo", "logo_full.png"), package = "persephone")` width="40%" alt="logo"/>'
+title: '<img src=`r system.file(file.path("help", "figures", "logo_full.png"), package = "persephone")`>'
 subtitle: "Remote Sensing Applications in Crop Phenology"
 author: "I. Oikonomidis, S. Trevezas"
 date: "`r format(Sys.Date(), format = '%d-%m-%Y')`"

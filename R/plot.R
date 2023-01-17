@@ -18,9 +18,53 @@
 #' @param height numeric. The height of the plot in inches.
 #' @param ... extra arguments
 #'
-#' @return A plot, created with \code{ggplot2} and \code{ggpubr}. The plot is
+#' @return A plot, created with `ggplot2` and `ggpubr`. The plot is
 #' returned wrapped inside `invisible()`.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
+#' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
+#' }
 setGeneric("plot")
 
 #' @rdname plot
@@ -106,9 +150,11 @@ setMethod("plot",
 
 #' @title Plot Metrics
 #'
-#' @description Create plots of the model metrics.
+#' @description
+#' Create plots of the model metrics.
 #'
 #' @param object an S4 object. The model of interest.
+#' @param title character. The plot title.
 #' @param ncol numeric. Number of rows in the plot layout.
 #' @param nrow numeric. Number of columns in the plot layout.
 #' @param save logical. Should the plot be saved?
@@ -119,12 +165,56 @@ setMethod("plot",
 #' @param print_plots logical. Should the plots be printed?
 #' @param ... extra arguments.
 #'
-#' @return A plot, created with \code{ggplot2} and \code{ggpubr}. The plot is
+#' @return A plot, created with `ggplot2` and `ggpubr`. The plot is
 #' returned wrapped inside `invisible()`.
 #'
-#' @export
 #' @importFrom ggplot2 ggplot geom_point geom_line aes labs theme element_text theme_minimal
 #' @importFrom ggpubr ggarrange text_grob annotate_figure
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
+#' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
+#' }
 setGeneric("plot_metrics", signature = c("object"),
            function(object, ...) { standardGeneric("plot_metrics") })
 
@@ -193,13 +283,18 @@ setMethod("plot_metrics",
 
 })
 
-#' Plot carousel
+#' @title Plot carousel
+#'
+#' @description
+#' Create an interactive carousel of plots that can be added to the model
+#' reports.
 #'
 #' @param fun function. A plot function.
-#' @param x S4 object. A PersephoneModel.
+#' @param x an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param ... extra arguments.
 #'
-#' @return Same as the function \code{slickR::slickR()}.
+#' @return Same as the function `slickR::slickR()`.
+#'
 #' @importFrom svglite xmlSVG
 #' @importFrom slickR slickR
 #' @export
@@ -213,7 +308,7 @@ carousel <- function(fun, x, ...) {
   slickR::slickR(plotsToSVG, width = "100%")
 }
 
-#' Create plot title
+#' @title Create plot title
 #'
 #' @param crop character. A crop of interest.
 #' @param seasons numeric. A vector of seasons.

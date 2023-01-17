@@ -7,9 +7,10 @@
 rmspe(x, y)
 }
 \arguments{
-\item{x}{data.frame. A data.frame with columns named "Stage", "Season", "Time", "Date" and "Percentage".}
+\item{x}{data.frame. A data.frame with columns named "Stage", "Season",
+"Time", "Date" and "Percentage".}
 
-\item{y}{data.frame. A data.frame with columns named "Stage", "Season", "Time", "Date" and "Percentage".}
+\item{y}{data.frame. Same structure as \code{x}.}
 }
 \value{
 A data.frame with columns Stage, Time and rmspe.

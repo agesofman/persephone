@@ -6,7 +6,9 @@
 \alias{persephone-package}
 \title{persephone: Remote Sensing Applications in Crop Phenology}
 \description{
-This package is part of the prometheus family of R packages.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+An R package that deals with applications in crop development.
 }
 \author{
 \strong{Maintainer}: Ioannis Oikonomidis \email{goikon@math.uoa.gr} (\href{https://orcid.org/0000-0001-8130-2104}{ORCID})

@@ -5,8 +5,9 @@
 
 #' Root Mean Square Prediction Error
 #'
-#' @param x data.frame. A data.frame with columns named "Stage", "Season", "Time", "Date" and "Percentage".
-#' @param y data.frame. A data.frame with columns named "Stage", "Season", "Time", "Date" and "Percentage".
+#' @param x data.frame. A data.frame with columns named "Stage", "Season",
+#' "Time", "Date" and "Percentage".
+#' @param y data.frame. Same structure as `x`.
 #'
 #' @return A data.frame with columns Stage, Time and rmspe.
 rmspe <- function(x, y) {
@@ -25,7 +26,7 @@ rmspe <- function(x, y) {
 
 }
 
-#' Average Root Mean Square Prediction Error
+#' @title Average Root Mean Square Prediction Error
 #'
 #' @param data data.frame. A data.frame with columns Stage, Time and spe.
 #'

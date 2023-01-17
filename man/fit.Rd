@@ -3,7 +3,7 @@
 \name{fit}
 \alias{fit}
 \alias{fit,PersephoneModelList-method}
-\alias{fit,PersephoneBinomial-method}
+\alias{fit,PersephoneQuasiBin-method}
 \alias{fit,PersephoneCumLink-method}
 \title{Persephone model fitting}
 \usage{
@@ -11,26 +11,64 @@ fit(object, ...)
 
 \S4method{fit}{PersephoneModelList}(object, ...)
 
-\S4method{fit}{PersephoneBinomial}(object, ...)
+\S4method{fit}{PersephoneQuasiBin}(object, ...)
 
 \S4method{fit}{PersephoneCumLink}(object, ...)
 }
 \arguments{
-\item{object}{S4 object. The model of interest.}
+\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
 
-\item{...}{extra arguments passed to update().}
+\item{...}{extra arguments passed to \code{update()}.}
 }
 \value{
-S4 object. The model of interest.
+an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
 }
 \description{
-Persephone model fitting
+Fit the model of interest. The model is fitted on the \code{model} and \code{data}
+already inside the \code{object}, unless extra arguments are provided, in which
+case the model is first updated and then fitted.
 }
 \examples{
 \dontrun{
-region <- c(name = "nebraska", type = "us state")
-formula <- "Percentage ~ Time"
-object <- new("PersephoneBinomial", region = region, formula = formula)
-object <- fit(object, data = data)
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+             region = region,
+            crop = "Corn",
+            data = progress_ne$Corn,
+            formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+            region = region,
+            crop = "Soybeans",
+            data = progress_ne$Soybeans,
+            formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
+
+# Fit
+object <- fit(object)
+
+# Plot
+plot(object, cumulative = TRUE, seasons = 2002)
+
+# Predict
+predict(object, progress_ne)
+
+# Evaluate
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+
+# Summarize
+summary(object)
+
+# Report
+report(object, name = "example_report", dir = getwd())
 }
 }

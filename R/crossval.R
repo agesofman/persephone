@@ -3,20 +3,63 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' Cross - Validation
+#' @title Cross - Validation
 #'
-#' @param object S4 object. The model of interest.
+#' @description
+#' Calculate the model performance metrics using leave-group-out (or Monte
+#' Carlo) cross-validation.
+#'
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param test numeric. The proportion of seasons to be used for testing
 #' @param maxsam numeric. The maximum number of Monte - Carlo samples to use.
 #' @param seed numeric. The seed to be used in Monte - Carlo sampling.
 #' @param ... extra arguments.
 #'
-#' @return A list.
+#' @return A list containing the calculated metrics.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' mrmspe <- crossval(object, test = 0.25, maxsam = 100, seed = 2938)
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
+#' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
 #' }
 setGeneric("crossval", signature = c("object"),
            function(object, ...) { standardGeneric("crossval") })

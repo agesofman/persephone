@@ -5,18 +5,25 @@
 
 #' @title Update Model
 #'
-#' @description Update one or more slots of a PersephoneModel object.
+#' @description
+#' Update one or more slots of a PersephoneModel object.
 #'
-#' @param object PersephoneModel. The object whose slots are to be updated.
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' whose slots are to be updated.
 #' @param ... extra arguments.
 #'
-#' @return PersephoneModel
+#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' object <- new("PersephoneBinomial", region = "A")
-#' object <- update(object, region = "B")
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' object <- new("PersephoneCumLink", region = region, crop = "Corn", model = "A")
+#' object <- update(object, region = region, crop = "Soybeans", model = "B")
 #' }
 setGeneric("update")
 

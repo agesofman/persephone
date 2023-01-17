@@ -7,28 +7,37 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-8130-2104")),
     person(given = "Samis", family = "Trevezas",
            email = "strevezas@math.uoa.gr", role = c("aut", "ths")))
-Description: persephone is an R package that deals with applications in crop development.
+Description: An R package that deals with applications in crop development.
+Language: en-US
 License: GPL (>= 3)
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
 Depends: 
     R (>= 4.0.0)
 Imports: 
+    beepr,
+    cronus,
     dplyr,
+    ggplot2,
+    ggpubr,
     grDevices,
+    kableExtra,
     magrittr,
-    nlme,
+    methods,
     ordinal,
     rmarkdown,
+    rmdformats,
     slickR,
     stats,
     svglite,
-    utils,
-    ggplot2,
-    ggpubr,
-    beepr,
-    kableExtra,
-    rmdformats,
-    methods,
-    cronus
+    utils
+Suggests:
+    covr,
+    knitr,
+    testthat (>= 3.0.0)
+Remotes: 
+    github::agesofman/cronus
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+LazyData: true

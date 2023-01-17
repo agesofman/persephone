@@ -7,6 +7,7 @@
 #' @importFrom grDevices pdf
 #' @importFrom methods slot<-
 #' @importFrom stats binomial
+#' @importFrom stats formula
 #' @importFrom stats glm
 #' @importFrom stats reformulate
 #' @importFrom stats weights

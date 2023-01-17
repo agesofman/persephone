@@ -9,7 +9,7 @@ carousel(fun, x, ...)
 \arguments{
 \item{fun}{function. A plot function.}
 
-\item{x}{S4 object. A PersephoneModel.}
+\item{x}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
 
 \item{...}{extra arguments.}
 }
@@ -17,5 +17,6 @@ carousel(fun, x, ...)
 Same as the function \code{slickR::slickR()}.
 }
 \description{
-Plot carousel
+Create an interactive carousel of plots that can be added to the model
+reports.
 }

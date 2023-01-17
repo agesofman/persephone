@@ -3,19 +3,64 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' Persephone model prediction
+#' @title `persephone` model prediction
 #'
-#' @param object S4 object. The model of interest.
+#' @description
+#' Calculate the predicted values of a model. The `object`, provided needs to
+#' have already passed from `fit`, in order to include a `model` slot.
+#'
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param pdata data.frame. The data used in model prediction.
 #' @param ... extra arguments.
 #'
 #' @return data.frame.
-#' @export
+#'
 #' @import dplyr
 #' @importFrom cronus calc_percentage
+#' @export
+#'
 #' @examples
 #' \dontrun{
-#' predicted_data <- predict(object, pdata)
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
+#' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
 #' }
 setGeneric("predict")
 
@@ -25,13 +70,13 @@ setMethod("predict",
           definition = function(object, pdata) {
 
   # Model Prediction
-  mapply(predict, object, pdata)
+  mapply(predict, object, pdata, SIMPLIFY = FALSE)
 
 })
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneBinomial"),
+          signature = c(object = "PersephoneQuasiBin"),
           definition = function(object, pdata) {
 
   # Initialize

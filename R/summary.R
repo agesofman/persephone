@@ -3,22 +3,61 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' Persephone model summary
+#' @title Persephone model summary
 #'
-#' @param object S4 object. The model of interest.
+#' @description
+#' Print a model summary.
+#'
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param ... extra arguments.
 #'
-#' @return S4 object. The model of interest.
+#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
+#'
 #' @importFrom ordinal nominal_test scale_test
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' region <- c(name = "nebraska", type = "us state")
-#' formula <- "Percentage ~ Time"
-#' object <- new("PersephoneBinomial", region = region, formula = formula)
-#' object <- fit(object, data = data)
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
 #' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
 #' }
 setGeneric("summary")
 
@@ -34,7 +73,7 @@ setMethod("summary",
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneBinomial"),
+          signature = c(object = "PersephoneQuasiBin"),
           definition = function(object, ...) {
 
           })
@@ -44,27 +83,31 @@ setMethod("summary",
           signature = c(object = "PersephoneCumLink"),
           definition = function(object, ...) {
 
-  x <- summary(object@model)
   dash_simple <- paste0(rep("-", 50))
   dash_double <- paste0(rep("=", 70))
 
   cat("General Information \n\n")
+  cat("Region:", object@region@name, "\n")
+  cat("Crop:", object@crop, "\n")
   cat("Formula:", object@formula, "\n")
   cat("Nominal:", object@nominal, "\n")
   cat("Scale:", object@scale, "\n\n")
 
-  print(x$info)
-  cat("\n", x$message, "\n")
-  cat("\n", dash_simple, "\n\n", sep = "")
+  if (!is.null(object@model)) {
+    x <- summary(object@model)
+    print(x$info)
+    cat("\n", x$message, "\n")
+    cat("\n", dash_simple, "\n\n", sep = "")
 
-  cat("Model Coefficients \n")
-  print(x$coefficients)
-  cat("\n", dash_simple, "\n\n", sep = "")
+    cat("Model Coefficients \n")
+    print(x$coefficients)
+    cat("\n", dash_simple, "\n\n", sep = "")
 
-  print(ordinal::nominal_test(object@model))
-  cat("\n", dash_simple, "\n\n", sep = "")
+    print(ordinal::nominal_test(object@model))
+    cat("\n", dash_simple, "\n\n", sep = "")
 
-  print(ordinal::scale_test(object@model))
-  cat("\n", dash_double, "\n\n", sep = "")
+    print(ordinal::scale_test(object@model))
+    cat("\n", dash_double, "\n\n", sep = "")
+  }
 
 })

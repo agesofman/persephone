@@ -14,37 +14,37 @@ output: github_document
  )
 ```
 
-# <img src="inst/logo/logo_full.png" height="70px" alt="logo"/>
+# persephone <img src=`r file.path("man", "figures", "logo.png")` align="right" height="139" alt="logo"/>
 
 <!-- badges: start -->
-
+[![CRAN status](https://www.r-pkg.org/badges/version/persephone)](https://CRAN.R-project.org/package=persephone)
+[![R-CMD-check](https://github.com/agesofman/persephone/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/agesofman/persephone/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/agesofman/persephone/branch/main/graph/badge.svg)](https://codecov.io/gh/agesofman/persephone)
 <!-- badges: end -->
 
 ## Introduction
 
-The *prometheus* project applies advanced statistical methodology on remote sensing agriculture. It is composed of several R packages, as well as other elements, each one focusing on a different application.
-
-*persephone* is an R package that deals with applications in crop development.
+The *Ages of Man* project applies advanced statistical methodology on remote sensing agriculture. It is composed of several R packages, as well as other elements, each one focusing on a different application. persephone is an R package that deals with applications in crop development.
 
 ## Installation
 
 You can install the development version of persephone from github by running the following line of code:
 
 ```{r}
- devtools::install_github("thechibo/persephone")
+ devtools::install_github("agesofman/persephone")
 ```
 
-It is instead recommended to install the entirety of the prometheus project. More details can be found in https://github.com/thechibo/prometheus .
+It is instead recommended to install the entirety of the *Ages of Man* project. More details can be found in the [agesofman Github repository](https://github.com/agesofman/agesofman "agesofman Github repository").
 
 ## Documentation
 
 Detailed documentation, along with reproducible examples, can be found in the package vignettes.
 
 ```{r}
-vignette(topic = "", package = "persephone")
+vignette(topic = "persephone", package = "persephone")
 ```
 
 ## Team
 
-The *prometheus* project is developed in the 
+The *Ages of Man* project is developed in the 
 [Mathematics Department](https://en.math.uoa.gr/ "Mathematics Department Homepage") of the [University of Athens](https://en.uoa.gr/ "University of Athens Homepage"). The project maintainer is [Ioannis Oikonomidis](http://users.uoa.gr/~goikon/ "Ioannis Oikonomidis Homepage"), working under the supervision of Prof. Samis Trevezas.

@@ -7,20 +7,57 @@
 \S4method{c}{PersephoneModel}(x, ...)
 }
 \arguments{
-\item{x}{PersephoneModel.}
+\item{x}{an object of class \code{PersephoneModel}.}
 
 \item{...}{extra models to concatenate.}
 }
 \value{
-PersephoneModelList
+an object of class \code{PersephoneModelList}.
 }
 \description{
 Concatenate PersephoneModel objects into a PersephoneModelList.
 }
 \examples{
 \dontrun{
-object1 <- new("PersephoneCumLink")
-object2 <- new("PersephoneBinomial")
-object <- c(object1, object2)
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+             region = region,
+            crop = "Corn",
+            data = progress_ne$Corn,
+            formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+            region = region,
+            crop = "Soybeans",
+            data = progress_ne$Soybeans,
+            formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
+
+# Fit
+object <- fit(object)
+
+# Plot
+plot(object, cumulative = TRUE, seasons = 2002)
+
+# Predict
+predict(object, progress_ne)
+
+# Evaluate
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+
+# Summarize
+summary(object)
+
+# Report
+report(object, name = "example_report", dir = getwd())
 }
 }

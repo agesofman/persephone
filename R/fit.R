@@ -3,23 +3,64 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' Persephone model fitting
+#' @title Persephone model fitting
 #'
-#' @param object S4 object. The model of interest.
-#' @param ... extra arguments passed to update().
+#' @description
+#' Fit the model of interest. The model is fitted on the `model` and `data`
+#' already inside the `object`, unless extra arguments are provided, in which
+#' case the model is first updated and then fitted.
 #'
-#' @return S4 object. The model of interest.
-#' @export
+#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param ... extra arguments passed to `update()`.
+#'
+#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
+#'
 #' @import dplyr
-#' @importFrom nlme gls
 #' @importFrom ordinal clm
+#' @export
 #'
 #' @examples
 #' \dontrun{
-#' region <- c(name = "nebraska", type = "us state")
-#' formula <- "Percentage ~ Time"
-#' object <- new("PersephoneBinomial", region = region, formula = formula)
-#' object <- fit(object, data = data)
+#' # Create a Region object
+#' library(cronus)
+#' region <- Region(name = "nebraska", type = "us state",
+#'                  div = c(country = "United States", state = "Nebraska"))
+#'
+#' # Create a model
+#' object1 <- new("PersephoneQuasiBin",
+#'              region = region,
+#'             crop = "Corn",
+#'             data = progress_ne$Corn,
+#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'
+#' # Create another model
+#' object2 <- new("PersephoneCumLink",
+#'             region = region,
+#'             crop = "Soybeans",
+#'             data = progress_ne$Soybeans,
+#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'
+#' # Concatenate the models
+#' object <- c(object1, object2) # PersephoneModelList
+#'
+#' # Fit
+#' object <- fit(object)
+#'
+#' # Plot
+#' plot(object, cumulative = TRUE, seasons = 2002)
+#'
+#' # Predict
+#' predict(object, progress_ne)
+#'
+#' # Evaluate
+#' object <- crossval(object, maxsam = 100, seed = 1)
+#' plot_metrics(object)
+#'
+#' # Summarize
+#' summary(object)
+#'
+#' # Report
+#' report(object, name = "example_report", dir = getwd())
 #' }
 setGeneric("fit", signature = c("object"),
            function(object, ...) { standardGeneric("fit") })
@@ -41,7 +82,7 @@ setMethod("fit",
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneBinomial"),
+          signature = c(object = "PersephoneQuasiBin"),
           definition = function(object, ...) {
 
   # Update object
@@ -53,7 +94,7 @@ setMethod("fit",
     data_stage$weights <- rep(100, nrow(data_stage))
     suppressWarnings(
       object@model[[stage]] <- glm(formula  = object@formula,
-                                   family   = stats::binomial(link = object@link),
+                                   family   = stats::quasibinomial(link = object@link),
                                    data     = data_stage,
                                    weights  = weights)
     )
@@ -75,7 +116,7 @@ setMethod("fit",
 
   # Model Fitting
   object@model <- eval(bquote(
-    ordinal::clm(formula   = .(as.formula(object@formula)),
+    ordinal::clm(formula   = .(formula(object@formula)),
                  nominal   = .(object@nominal),
                  scale     = .(object@scale),
                  link      = .(object@link),

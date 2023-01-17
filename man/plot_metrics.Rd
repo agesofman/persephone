@@ -36,6 +36,8 @@ plot_metrics(object, ...)
 
 \item{...}{extra arguments.}
 
+\item{title}{character. The plot title.}
+
 \item{save}{logical. Should the plot be saved?}
 
 \item{dir}{character. The directory in which the plot will be saved.}
@@ -58,4 +60,48 @@ returned wrapped inside \code{invisible()}.
 }
 \description{
 Create plots of the model metrics.
+}
+\examples{
+\dontrun{
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+             region = region,
+            crop = "Corn",
+            data = progress_ne$Corn,
+            formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+            region = region,
+            crop = "Soybeans",
+            data = progress_ne$Soybeans,
+            formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
+
+# Fit
+object <- fit(object)
+
+# Plot
+plot(object, cumulative = TRUE, seasons = 2002)
+
+# Predict
+predict(object, progress_ne)
+
+# Evaluate
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+
+# Summarize
+summary(object)
+
+# Report
+report(object, name = "example_report", dir = getwd())
+}
 }

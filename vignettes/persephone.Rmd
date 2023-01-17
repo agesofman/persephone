@@ -1,0 +1,106 @@
+---
+title: "persephone"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{persephone}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+This vignette contains general information on the package. It is intended to give the user a general picture of the package features, presenting the code architecture in a clear and concise way.
+
+The package includes a dataset of the corn and soybeans progress in Nebraska for 20 seasons, from 2002 to 2021. The user can easily draw data from the Demeter database to create a different dataset. More details can be found in the [cronus Github repository](https://github.com/agesofman/cronus "cronus Github repository").
+
+```{r setup}
+library(cronus)
+library(persephone)
+
+# Create a Region object
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Take a look at the data
+head(progress_ne$Corn)
+```
+
+### Model Creation
+
+The package is built using the S4 class system, offering simplicity to new R users as well as ease of development to the project core team. Functions require a single object that holds all the necessary information concerning the model of interest. These objects are of class `PersephoneModel` and can be concatenated into an object of class `PersephoneModelList`.
+
+```{r creation}
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+               region = region,
+               crop = "Corn",
+               data = progress_ne$Corn,
+               formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+               region = region,
+               crop = "Soybeans",
+               data = progress_ne$Soybeans,
+               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
+
+# Tools
+get_crops(object)
+get_region(object)
+get_index(object, crop = "Corn")
+get_stages(object)
+get_seasons(object)
+```
+
+### Fitting
+
+Fitting the object is straightforward with the function `fit()`, which takes a
+`PersephoneModel` or `PersephoneModelList` object and alters its `model` and `fitted` slots.
+
+```{r fitting}
+object <- fit(object)
+plot(object, cumulative = TRUE, seasons = 2002)
+```
+
+### Prediction
+
+The function `predict()` can take an object that has already been fitted and calculate the model predictions on a different dataset.
+
+```{r prediction}
+predict(object, progress_ne)
+```
+
+### Evaluation
+
+The evaluation of a model can be achieved with the `crossval()` function, which performs Monte-Carlo (or leave-group-out) cross validation and alters the object's `metrics` slots.
+
+```{r evaluation}
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+```
+
+### Summary
+
+Function `summary()` can be used to get a brief presentation of the object.
+
+```{r summary}
+summary(object)
+```
+
+### Report
+
+Instead of executing the above functions interactively, an html report including fitting, evaluation and summary of the model can be generated with the function `report()`. 
+
+```{r report, eval = FALSE}
+report(object, name = "example_report", path = getwd())
+```

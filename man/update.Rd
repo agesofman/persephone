@@ -13,19 +13,25 @@ update(object, ...)
 \S4method{update}{PersephoneModelList}(object, ...)
 }
 \arguments{
-\item{object}{PersephoneModel. The object whose slots are to be updated.}
+\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
+whose slots are to be updated.}
 
 \item{...}{extra arguments.}
 }
 \value{
-PersephoneModel
+an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
 }
 \description{
 Update one or more slots of a PersephoneModel object.
 }
 \examples{
 \dontrun{
-object <- new("PersephoneBinomial", region = "A")
-object <- update(object, region = "B")
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+object <- new("PersephoneCumLink", region = region, crop = "Corn", model = "A")
+object <- update(object, region = region, crop = "Soybeans", model = "B")
 }
 }

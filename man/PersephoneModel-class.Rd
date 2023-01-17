@@ -3,39 +3,73 @@
 \docType{class}
 \name{PersephoneModel-class}
 \alias{PersephoneModel-class}
-\alias{PersephoneBinomial-class}
+\alias{PersephoneQuasiBin-class}
 \alias{PersephoneCumLink-class}
-\title{Persephone Model Classes}
+\title{\code{persephone} Model Classes}
 \value{
 An S4 object of the appropriate class.
 }
 \description{
-Persephone Model Classes
+\code{persephone} defines a number of model classes. Objects belonging to a
+model class can be passed to the main package functions for fitting and
+prediction.
+}
+\details{
+Details on the \code{PersephoneCumLink} class:
+Model fitting is based on \code{ordinal::clm()}. Information on arguments
+\code{formula}, \code{nominal}, \code{scale}, \code{link} and \code{threshold} can be found there.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{region}}{character. A region of interest.}
+\item{\code{region}}{an object of class Region. A region of interest. See package
+\code{cronus} for more details}
 
-\item{\code{data}}{list.}
+\item{\code{data}}{data.frame. The data on which the model will be fitted.}
 
-\item{\code{model}}{list.}
+\item{\code{model}}{ANY. An object holding information about the fitting.}
 
-\item{\code{fitted}}{list.}
+\item{\code{fitted}}{data.frame. The fitted data.}
 
-\item{\code{formula}}{character.}
+\item{\code{metrics}}{list. A list of metrics calculated using \code{persephone::crossval()}.}
 
-\item{\code{correlation}}{ANY.}
+\item{\code{formula}}{character. The model formula. See details.}
 
-\item{\code{weights}}{ANY.}
+\item{\code{nominal}}{character. The nominal effects. See details.}
 
-\item{\code{link}}{character.}
+\item{\code{scale}}{character. The scale effects. See details.}
 
-\item{\code{nominal}}{character.}
+\item{\code{link}}{character. The link function used.}
+
+\item{\code{threshold}}{character. The type of thresholds used. See details.}
 }}
 
 \examples{
 \dontrun{
-object <- new("PersephoneCumLink")
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+             region = region,
+            crop = "Corn",
+            data = progress_ne$Corn,
+            formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+            region = region,
+            crop = "Soybeans",
+            data = progress_ne$Soybeans,
+            formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
 }
+}
+\seealso{
+\code{\link[=fit]{fit()}}, \code{\link[=predict]{predict()}},
+\code{\link[=crossval]{crossval()}}, \code{\link[ordinal:clm]{ordinal::clm()}}
 }

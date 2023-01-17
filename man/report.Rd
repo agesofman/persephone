@@ -13,7 +13,7 @@ report(object, ...)
 \S4method{report}{PersephoneModelList}(object, name, path = getwd(), bell = 2)
 }
 \arguments{
-\item{object}{S4 object. The model of interest.}
+\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
 
 \item{...}{extra arguments.}
 
@@ -27,10 +27,50 @@ report(object, ...)
 nothing. The html report(s) is (are) created and stored.
 }
 \description{
-Create reports
+Create html reports that present the model performance, including, fitting,
+predictions, evaluation metrics and corresponding plots.
 }
 \examples{
 \dontrun{
-report(object, name = "myreport", path = getwd())
+# Create a Region object
+library(cronus)
+region <- Region(name = "nebraska", type = "us state",
+                 div = c(country = "United States", state = "Nebraska"))
+
+# Create a model
+object1 <- new("PersephoneQuasiBin",
+             region = region,
+            crop = "Corn",
+            data = progress_ne$Corn,
+            formula = "Stage ~ Time + agdd") # PersephoneModel
+
+# Create another model
+object2 <- new("PersephoneCumLink",
+            region = region,
+            crop = "Soybeans",
+            data = progress_ne$Soybeans,
+            formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+
+# Concatenate the models
+object <- c(object1, object2) # PersephoneModelList
+
+# Fit
+object <- fit(object)
+
+# Plot
+plot(object, cumulative = TRUE, seasons = 2002)
+
+# Predict
+predict(object, progress_ne)
+
+# Evaluate
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+
+# Summarize
+summary(object)
+
+# Report
+report(object, name = "example_report", path = getwd())
 }
 }
