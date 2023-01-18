@@ -10,6 +10,13 @@
 
 An R package that deals with applications in crop development.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://agesofman.github.io/persephone/}
+}
+
+}
 \author{
 \strong{Maintainer}: Ioannis Oikonomidis \email{goikon@math.uoa.gr} (\href{https://orcid.org/0000-0001-8130-2104}{ORCID})
 

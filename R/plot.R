@@ -31,17 +31,17 @@
 #'
 #' # Create a model
 #' object1 <- new("PersephoneQuasiBin",
-#'              region = region,
-#'             crop = "Corn",
-#'             data = progress_ne$Corn,
-#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'                region = region,
+#'                crop = "Corn",
+#'                data = progress_ne$Corn,
+#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 #'
 #' # Create another model
 #' object2 <- new("PersephoneCumLink",
-#'             region = region,
-#'             crop = "Soybeans",
-#'             data = progress_ne$Soybeans,
-#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'                region = region,
+#'                crop = "Soybeans",
+#'                data = progress_ne$Soybeans,
+#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
 #'
 #' # Concatenate the models
 #' object <- c(object1, object2) # PersephoneModelList
@@ -93,9 +93,9 @@ setMethod("plot",
 
   # Choose variable
   if (cumulative) {
-    y = "CumPercentage"
+    y <- "CumPercentage"
   } else {
-    y = "Percentage"
+    y <- "Percentage"
   }
 
   # Create the plots
@@ -301,7 +301,7 @@ setMethod("plot_metrics",
 carousel <- function(fun, x, ...) {
   plotsToSVG <- list()
   seasons <- get_seasons(x)
-  for (i in 1:length(seasons)) {
+  for (i in seq_along(seasons)) {
     plotsToSVG[[i]] <- svglite::xmlSVG(code = {fun(x = x, seasons = seasons[i], ...)},
                                        standalone = TRUE, width = 14, height = 6.5)
   }

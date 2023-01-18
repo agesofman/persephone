@@ -1,0 +1,4 @@
+url: https://agesofman.github.io/persephone/
+template:
+  bootstrap: 5
+  bootswatch: cosmo

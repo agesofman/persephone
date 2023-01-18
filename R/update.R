@@ -37,8 +37,8 @@ setMethod("update",
 
   # Update the slots
   if (length(elements) > 0) {
-    for (i in 1:length(elements)) {
-      slot(object, names(elements)[i]) = elements[[i]]
+    for (i in seq_along(elements)) {
+      slot(object, names(elements)[i]) <- elements[[i]]
     }
   }
 
@@ -57,7 +57,7 @@ setMethod("update",
 
   # Update the slots
   if (length(elements) > 0) {
-    for (i in 1:length(object)) {
+    for (i in seq_along(object)) {
       elements_crop <- lapply(elements, function(x){ x[[i]] })
       object[[i]] <- do.call(update, args = c(elements_crop, object = object[[i]]))
     }

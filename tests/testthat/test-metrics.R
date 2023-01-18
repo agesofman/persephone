@@ -10,7 +10,7 @@ test_that("metrics works", {
                  region = region,
                  crop = "Corn",
                  data = progress_ne$Corn,
-                 formula = "Stage ~ Time + agdd") # PersephoneModel
+                 formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 
   # Create another model
   object2 <- new("PersephoneCumLink",

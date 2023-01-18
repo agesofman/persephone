@@ -28,17 +28,17 @@
 #'
 #' # Create a model
 #' object1 <- new("PersephoneQuasiBin",
-#'              region = region,
-#'             crop = "Corn",
-#'             data = progress_ne$Corn,
-#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'                region = region,
+#'                crop = "Corn",
+#'                data = progress_ne$Corn,
+#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 #'
 #' # Create another model
 #' object2 <- new("PersephoneCumLink",
-#'             region = region,
-#'             crop = "Soybeans",
-#'             data = progress_ne$Soybeans,
-#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'                region = region,
+#'                crop = "Soybeans",
+#'                data = progress_ne$Soybeans,
+#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
 #'
 #' # Concatenate the models
 #' object <- c(object1, object2) # PersephoneModelList
@@ -86,7 +86,7 @@ setMethod("predict",
   pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
   pdata <- dplyr::distinct(pdata)
   stages <- get_stages(object)
-  for (i in 1:length(stages)){
+  for (i in seq_along(stages)){
     stage <- stages[i]
     pdata$Stage <- rep(stage, times = nrow(pdata))
     pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")

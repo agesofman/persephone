@@ -10,7 +10,7 @@ test_that("class definition works", {
                  region = region,
                  crop = "Corn",
                  data = progress_ne$Corn,
-                 formula = "Stage ~ Time + agdd") # PersephoneModel
+                 formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 
   expect_s4_class(object1, "PersephoneQuasiBin")
 

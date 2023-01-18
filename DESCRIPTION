@@ -41,3 +41,4 @@ RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true
+URL: https://agesofman.github.io/persephone/

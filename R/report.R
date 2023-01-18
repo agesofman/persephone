@@ -32,17 +32,17 @@
 #'
 #' # Create a model
 #' object1 <- new("PersephoneQuasiBin",
-#'              region = region,
-#'             crop = "Corn",
-#'             data = progress_ne$Corn,
-#'             formula = "Stage ~ Time + agdd") # PersephoneModel
+#'                region = region,
+#'                crop = "Corn",
+#'                data = progress_ne$Corn,
+#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 #'
 #' # Create another model
 #' object2 <- new("PersephoneCumLink",
-#'             region = region,
-#'             crop = "Soybeans",
-#'             data = progress_ne$Soybeans,
-#'             formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'                region = region,
+#'                crop = "Soybeans",
+#'                data = progress_ne$Soybeans,
+#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
 #'
 #' # Concatenate the models
 #' object <- c(object1, object2) # PersephoneModelList
@@ -84,7 +84,7 @@ setMethod("report",
   rmarkdown::render(input = path_input,
                     output_file = file.path(dir_output, paste0(name, ".html")),
                     params = list(object = object),
-                    quiet = FALSE)
+                    quiet = TRUE)
 
   # Ring the bell
   if (!is.null(bell)) {
