@@ -38,11 +38,7 @@ It is instead recommended to install the entirety of the *Ages of Man* project. 
 
 ## Documentation
 
-Detailed documentation, along with reproducible examples, can be found in the package vignettes.
-
-```{r}
-vignette(topic = "persephone", package = "persephone")
-```
+Detailed documentation, along with reproducible examples, can be found in the package vignette `vignette(topic = "persephone", package = "persephone")`.
 
 ## Team
 

@@ -8,8 +8,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/persephone)](https://CRAN.R-project.org/package=persephone)
 [![R-CMD-check](https://github.com/agesofman/persephone/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/agesofman/persephone/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/agesofman/persephone/branch/master/graph/badge.svg)](https://app.codecov.io/gh/agesofman/persephone?branch=master)
+[![codecov](https://codecov.io/gh/agesofman/persephone/branch/main/graph/badge.svg)](https://codecov.io/gh/agesofman/persephone)
 <!-- badges: end -->
 
 ## Introduction
@@ -36,11 +35,8 @@ repository](https://github.com/agesofman/agesofman "agesofman Github repository"
 ## Documentation
 
 Detailed documentation, along with reproducible examples, can be found
-in the package vignettes.
-
-``` r
-vignette(topic = "persephone", package = "persephone")
-```
+in the package vignette
+`vignette(topic = "persephone", package = "persephone")`.
 
 ## Team
 
