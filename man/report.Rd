@@ -8,9 +8,9 @@
 \usage{
 report(object, ...)
 
-\S4method{report}{PersephoneModel}(object, name, path = getwd(), bell = 2)
+\S4method{report}{PersephoneModel}(object, name, path = getwd())
 
-\S4method{report}{PersephoneModelList}(object, name, path = getwd(), bell = 2)
+\S4method{report}{PersephoneModelList}(object, name, path = getwd())
 }
 \arguments{
 \item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
@@ -20,8 +20,6 @@ report(object, ...)
 \item{name}{character. The html file name.}
 
 \item{path}{character. The path to store the html report.}
-
-\item{bell}{numeric. A sound notifying the user that the report(s) is (are) ready.}
 }
 \value{
 nothing. The html report(s) is (are) created and stored.

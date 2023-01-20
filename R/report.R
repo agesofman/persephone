@@ -12,13 +12,11 @@
 #' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param name character. The html file name.
 #' @param path character. The path to store the html report.
-#' @param bell numeric. A sound notifying the user that the report(s) is (are) ready.
 #' @param ... extra arguments.
 #'
 #' @return nothing. The html report(s) is (are) created and stored.
 #'
 #' @importFrom rmarkdown render
-#' @importFrom beepr beep
 #' @importFrom kableExtra kable_styling
 #' @import rmdformats
 #' @export
@@ -72,7 +70,7 @@ setGeneric("report", signature = c("object"),
 #' @rdname report
 setMethod("report",
           signature  = c(object = "PersephoneModel"),
-          definition = function(object, name, path = getwd(), bell = 2){
+          definition = function(object, name, path = getwd()){
 
   # Get the directories
   path_input <- system.file("report.Rmd", package = 'persephone')
@@ -86,23 +84,13 @@ setMethod("report",
                     params = list(object = object),
                     quiet = TRUE)
 
-  # Ring the bell
-  if (!is.null(bell)) {
-    beepr::beep(bell)
-  }
-
 })
 
 #' @rdname report
 setMethod("report",
           signature  = c(object = "PersephoneModelList"),
-          definition = function(object, name, path = getwd(), bell = 2){
+          definition = function(object, name, path = getwd()){
 
-  lapply(object, report, name = name, path = path, bell = NULL)
-
-  # Ring the bell
-  if (!is.null(bell)) {
-    beepr::beep(bell)
-  }
+  lapply(object, report, name = name, path = path)
 
 })

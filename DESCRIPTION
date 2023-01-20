@@ -13,7 +13,6 @@ License: GPL (>= 3)
 Depends: 
     R (>= 4.0.0)
 Imports: 
-    beepr,
     cronus,
     dplyr,
     ggplot2,
