@@ -1,6 +1,6 @@
 Package: persephone
 Title: Remote Sensing Applications in Crop Phenology
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person(given = "Ioannis", family = "Oikonomidis",
            email = "goikon@math.uoa.gr", role = c("aut", "cre"),

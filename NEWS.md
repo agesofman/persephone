@@ -1,3 +1,5 @@
+# persephone 0.0.3
+
 # persephone 0.0.2
 
 * Fixed `fit()` bug for class `PersephoneQuasiBin`.
