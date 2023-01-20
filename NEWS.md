@@ -1,4 +1,10 @@
+# persephone 0.0.4
+
+* Fixed bug in tests.
+
 # persephone 0.0.3
+
+* First release.
 
 # persephone 0.0.2
 
