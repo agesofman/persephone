@@ -3,7 +3,8 @@
 \name{summary}
 \alias{summary}
 \alias{summary,PersephoneModelList-method}
-\alias{summary,PersephoneQuasiBin-method}
+\alias{summary,PersephoneBin-method}
+\alias{summary,PersephoneMixedBin-method}
 \alias{summary,PersephoneCumLink-method}
 \title{Persephone model summary}
 \usage{
@@ -11,7 +12,9 @@ summary(object, ...)
 
 \S4method{summary}{PersephoneModelList}(object, ...)
 
-\S4method{summary}{PersephoneQuasiBin}(object, ...)
+\S4method{summary}{PersephoneBin}(object, ...)
+
+\S4method{summary}{PersephoneMixedBin}(object, ...)
 
 \S4method{summary}{PersephoneCumLink}(object, ...)
 }
@@ -34,7 +37,7 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

@@ -27,7 +27,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -76,7 +76,7 @@ setMethod("predict",
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneQuasiBin"),
+          signature = c(object = "PersephoneBin"),
           definition = function(object, pdata) {
 
   # Initialize
@@ -86,9 +86,46 @@ setMethod("predict",
   pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
   pdata <- dplyr::distinct(pdata)
   stages <- get_stages(object)
-  for (i in seq_along(stages)){
-    stage <- stages[i]
-    pdata$Stage <- rep(stage, times = nrow(pdata))
+  n <- nrow(pdata)
+
+  # for i = 1
+  pdata$Stage <- rep(stages[1], times = n)
+  pdata$CumPercentage <- rep(1, times = n)
+  newdata <- rbind(newdata, pdata)
+
+  for (stage in stages[-1]){
+    pdata$Stage <- rep(stage, times = n)
+    pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")
+    newdata <- rbind(newdata, pdata)
+  }
+  newdata <- cronus::calc_percentage(newdata, cum = FALSE)
+
+  # Return the predicted data
+  newdata
+
+})
+
+#' @rdname predict
+setMethod("predict",
+          signature = c(object = "PersephoneMixedBin"),
+          definition = function(object, pdata) {
+
+  # Initialize
+  newdata <- data.frame()
+
+  # Model Prediction
+  pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
+  pdata <- dplyr::distinct(pdata)
+  stages <- get_stages(object)
+  n <- nrow(pdata)
+
+  # for i = 1
+  pdata$Stage <- rep(stages[1], times = n)
+  pdata$CumPercentage <- rep(1, times = n)
+  newdata <- rbind(newdata, pdata)
+
+  for (stage in stages[-1]){
+    pdata$Stage <- rep(stage, times = n)
     pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")
     newdata <- rbind(newdata, pdata)
   }
@@ -106,6 +143,20 @@ setMethod("predict",
 
   # Model Prediction
   pdata$Percentage <- predict(object@model, pdata, type = "prob")$fit
+  pdata <- cronus::calc_percentage(pdata, cum = TRUE)
+
+  # Return the predicted data
+  pdata
+
+})
+
+#' @rdname predict
+setMethod("predict",
+          signature = c(object = "PersephoneMixedCumLink"),
+          definition = function(object, pdata) {
+
+  # Model Prediction
+  pdata$Percentage <- predict(object@model, pdata, type = "prob")
   pdata <- cronus::calc_percentage(pdata, cum = TRUE)
 
   # Return the predicted data

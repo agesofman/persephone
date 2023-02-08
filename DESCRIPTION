@@ -1,6 +1,6 @@
 Package: persephone
 Title: Remote Sensing Applications in Crop Phenology
-Version: 0.0.4
+Version: 0.1.0
 Authors@R: c(
     person(given = "Ioannis", family = "Oikonomidis",
            email = "goikon@math.uoa.gr", role = c("aut", "cre"),
@@ -13,12 +13,14 @@ License: GPL (>= 3)
 Depends: 
     R (>= 4.0.0)
 Imports: 
+    AICcmodavg,
     cronus,
     dplyr,
     ggplot2,
     ggpubr,
     grDevices,
     kableExtra,
+    lme4,
     magrittr,
     methods,
     ordinal,

@@ -8,9 +8,23 @@
 \usage{
 report(object, ...)
 
-\S4method{report}{PersephoneModel}(object, name, path = getwd())
+\S4method{report}{PersephoneModel}(
+  object,
+  name = NULL,
+  path = getwd(),
+  test = 0.25,
+  maxsam = 500,
+  seed = 1
+)
 
-\S4method{report}{PersephoneModelList}(object, name, path = getwd())
+\S4method{report}{PersephoneModelList}(
+  object,
+  name = NULL,
+  path = getwd(),
+  test = 0.25,
+  maxsam = 500,
+  seed = 1
+)
 }
 \arguments{
 \item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
@@ -20,6 +34,12 @@ report(object, ...)
 \item{name}{character. The html file name.}
 
 \item{path}{character. The path to store the html report.}
+
+\item{test}{Passed to \code{persephone::crossval()}.}
+
+\item{maxsam}{Passed to \code{persephone::crossval()}.}
+
+\item{seed}{Passed to \code{persephone::crossval()}.}
 }
 \value{
 nothing. The html report(s) is (are) created and stored.
@@ -36,7 +56,7 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

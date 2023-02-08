@@ -30,7 +30,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -90,6 +90,7 @@ setMethod("plot",
   if (is.null(seasons)) {
     seasons <- get_seasons(x)
   }
+  data <- dplyr::filter(data, .data$Season %in% seasons)
 
   # Choose variable
   if (cumulative) {
@@ -98,21 +99,39 @@ setMethod("plot",
     y <- "Percentage"
   }
 
-  # Create the plots
-  data <- dplyr::filter(data, .data$Season %in% seasons)
-  fitted <- dplyr::filter(fitted, .data$Season %in% seasons)
-  p <- ggplot2::ggplot() +
-    ggplot2::geom_point(data = data,
-                        ggplot2::aes(x = .data$Date,
-                                     y = .data[[y]],
-                                     col = .data$Stage)) +
-    ggplot2::geom_line(data = fitted,
-                       ggplot2::aes(x = .data$Date,
-                                    y = .data[[y]],
-                                    col = .data$Stage)) +
+  # Initialize plot
+  p <- ggplot2::ggplot()
+
+  # Plot fitted values
+  if (nrow(fitted) > 0) {
+    fitted <- dplyr::filter(fitted, .data$Season %in% seasons)
+    p <- p +
+      ggplot2::geom_point(data = data,
+                          ggplot2::aes(x = .data$Date,
+                                       y = .data[[y]],
+                                       col = .data$Stage)) +
+      ggplot2::geom_line(data = fitted,
+                         ggplot2::aes(x = .data$Date,
+                                      y = .data[[y]],
+                                      col = .data$Stage))
+  } else {
+    p <- p +
+      ggplot2::geom_point(data = data,
+                          ggplot2::aes(x = .data$Date,
+                                       y = .data[[y]],
+                                       col = .data$Stage)) +
+      ggplot2::geom_line(data = data,
+                          ggplot2::aes(x = .data$Date,
+                                       y = .data[[y]],
+                                       col = .data$Stage))
+  }
+
+  # Customize plot
+  p <- p +
     ggplot2::labs(title = create_title(x@crop, seasons), y = "Percentage", x = "Time") +
-    ggplot2::theme_minimal(base_size = 18) +
+    ggplot2::theme_minimal(base_size = 18)
     ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(t = 10, b = 10, unit = "pt")))
+
   plot(p)
 
   # Close the device
@@ -180,7 +199,7 @@ setMethod("plot",
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'              region = region,
 #'             crop = "Corn",
 #'             data = progress_ne$Corn,

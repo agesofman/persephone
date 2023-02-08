@@ -26,7 +26,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -78,7 +78,7 @@ setMethod("crossval",
   df_rmspe <- data.frame()
 
   # Create a progress bar object
-  frm <- paste0("Processing ", object@crop, " [:bar] :percent | Remaining: :eta | Elapsed: :elapsedfull")
+  frm <- paste0("Processing ", get_crops(object), " ", get_label(object), " [:bar] :percent | Remaining: :eta | Elapsed: :elapsedfull")
   pb  <- progress::progress_bar$new(format = frm, total = ncomb, clear = FALSE)
 
   # Repeat for all combinations

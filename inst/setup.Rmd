@@ -6,5 +6,5 @@ crop <- get_crops(object)
 region <- get_region(object)
 seasons <- get_seasons(object)
 object <- fit(object)
-object <- crossval(object, maxsam = 10, seed = 1)
+object <- crossval(object, test = test, maxsam = maxsam, seed = seed)
 ```

@@ -24,7 +24,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -73,7 +73,7 @@ setMethod("summary",
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneQuasiBin"),
+          signature = c(object = "PersephoneBin"),
           definition = function(object, ...) {
 
   dash_simple <- paste0(rep("-", 50))
@@ -85,7 +85,32 @@ setMethod("summary",
   cat("Formula:", object@formula, "\n\n")
 
   if (!is.null(object@model)) {
-    stages <- as.character(get_stages(object))
+    stages <- as.character(get_stages(object))[-1]
+    for (i in seq_along(stages)) {
+      cat(dash_simple, "\n\n", sep = "")
+      cat("Stage:", stages[i], "\n")
+      print(summary(object@model[[i]]))
+    }
+    cat(dash_double, "\n\n", sep = "")
+  }
+
+})
+
+#' @rdname summary
+setMethod("summary",
+          signature = c(object = "PersephoneMixedBin"),
+          definition = function(object, ...) {
+
+  dash_simple <- paste0(rep("-", 50))
+  dash_double <- paste0(rep("=", 70))
+
+  cat("General Information \n\n")
+  cat("Region:", object@region@name, "\n")
+  cat("Crop:", object@crop, "\n")
+  cat("Formula:", object@formula, "\n\n")
+
+  if (!is.null(object@model)) {
+    stages <- as.character(get_stages(object))[-1]
     for (i in seq_along(stages)) {
       cat(dash_simple, "\n\n", sep = "")
       cat("Stage:", stages[i], "\n")

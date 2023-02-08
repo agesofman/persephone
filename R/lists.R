@@ -22,7 +22,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,

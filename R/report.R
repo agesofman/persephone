@@ -12,6 +12,9 @@
 #' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
 #' @param name character. The html file name.
 #' @param path character. The path to store the html report.
+#' @param test Passed to `persephone::crossval()`.
+#' @param maxsam Passed to `persephone::crossval()`.
+#' @param seed Passed to `persephone::crossval()`.
 #' @param ... extra arguments.
 #'
 #' @return nothing. The html report(s) is (are) created and stored.
@@ -29,7 +32,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -70,18 +73,24 @@ setGeneric("report", signature = c("object"),
 #' @rdname report
 setMethod("report",
           signature  = c(object = "PersephoneModel"),
-          definition = function(object, name, path = getwd()){
+          definition = function(object, name = NULL, path = getwd(),
+                                test = 0.25, maxsam = 500, seed = 1){
 
   # Get the directories
   path_input <- system.file("report.Rmd", package = 'persephone')
-  dir_output <- file.path(path, "persephone", "output", "reports",
-                          object@region@name, tolower(object@crop), class(object))
+  dir_output <- file.path(path, "projects", "persephone", "out", "reports",
+                          get_region(object), tolower(get_crops(object)), class(object))
   dir.create(dir_output, showWarnings = FALSE, recursive = TRUE)
+
+  # Get name
+  if (is.null(name)) {
+    name <- get_label(object)
+  }
 
   # Create the report
   rmarkdown::render(input = path_input,
                     output_file = file.path(dir_output, paste0(name, ".html")),
-                    params = list(object = object),
+                    params = list(object = object, test = test, maxsam = maxsam, seed = seed),
                     quiet = TRUE)
 
 })
@@ -89,8 +98,10 @@ setMethod("report",
 #' @rdname report
 setMethod("report",
           signature  = c(object = "PersephoneModelList"),
-          definition = function(object, name, path = getwd()){
+          definition = function(object, name = NULL, path = getwd(),
+                                test = 0.25, maxsam = 500, seed = 1){
 
-  lapply(object, report, name = name, path = path)
+  lapply(object, report, name = name, path = path,
+         test = test, maxsam = maxsam, seed = seed)
 
 })

@@ -10,6 +10,7 @@
 #'  model class can be passed to the main package functions for fitting and
 #'  prediction.
 #'
+#' @slot label character. The object's label.
 #' @slot region an object of class Region. A region of interest. See package
 #' `cronus` for more details
 #' @slot data data.frame. The data on which the model will be fitted.
@@ -21,6 +22,9 @@
 #' @slot scale character. The scale effects. See details.
 #' @slot link character. The link function used.
 #' @slot threshold character. The type of thresholds used. See details.
+#' @slot nAGQ numeric. The number of quadrature points to be used in the
+#' adaptive Gauss-Hermite quadrature approximation to the marginal likelihood.
+#' See details.
 #'
 #' @return An S4 object of the appropriate class.
 #'
@@ -28,6 +32,10 @@
 #' Details on the `PersephoneCumLink` class:
 #' Model fitting is based on `ordinal::clm()`. Information on arguments
 #' `formula`, `nominal`, `scale`, `link` and `threshold` can be found there.
+#' Details on the `PersephoneMixedCumLink` class:
+#' Model fitting is based on `ordinal::clm2()`. Information on arguments
+#' `formula`, `nominal`, `scale`, `link`, `threshold` and `nAGQ` can be found
+#' there.
 #'
 #' @importClassesFrom cronus Region
 #' @export
@@ -43,7 +51,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -60,13 +68,15 @@
 #' object <- c(object1, object2) # PersephoneModelList
 #' }
 setClass("PersephoneModel",
-         slots = list(region  = "Region",
+         slots = list(label   = "character",
+                      region  = "Region",
                       crop    = "character",
                       data    = "data.frame",
                       model   = "ANY",
                       fitted  = "data.frame",
                       metrics = "list"),
-         prototype = list(region  = NULL,
+         prototype = list(label   = "",
+                          region  = NULL,
                           crop    = "",
                           data    = data.frame(),
                           model   = NULL,
@@ -74,12 +84,22 @@ setClass("PersephoneModel",
                           metrics = list()))
 
 #' @rdname PersephoneModel-class
-setClass("PersephoneQuasiBin",
+setClass("PersephoneBin",
          contains  = "PersephoneModel",
          slots     = list(formula = "character",
                           link    = "character"),
          prototype = list(formula = "",
                           link = "logit"))
+
+#' @rdname PersephoneModel-class
+setClass("PersephoneMixedBin",
+         contains  = "PersephoneModel",
+         slots     = list(formula = "character",
+                          link    = "character",
+                          nAGQ    = "numeric"),
+         prototype = list(formula = "",
+                          link = "logit",
+                          nAGQ = 1))
 
 #' @rdname PersephoneModel-class
 setClass("PersephoneCumLink",
@@ -95,6 +115,22 @@ setClass("PersephoneCumLink",
                           link = "logit",
                           threshold = "flexible"))
 
+#' @rdname PersephoneModel-class
+setClass("PersephoneMixedCumLink",
+         contains = "PersephoneModel",
+         slots = list(formula   = "character",
+                      scale     = "character",
+                      nominal   = "character",
+                      random    = "character",
+                      link      = "character",
+                      threshold = "character",
+                      nAGQ      = "numeric"),
+         prototype = list(formula = "",
+                          scale = "~ 1",
+                          nominal = "~ 1",
+                          random = "Season",
+                          link = "logistic",
+                          threshold = "flexible",
+                          nAGQ = 1))
+
 setOldClass("PersephoneModelList")
-setOldClass(c("PersephoneQuasiBinList", "PersephoneModelList"))
-setOldClass(c("PersephoneCumLinkList", "PersephoneModelList"))

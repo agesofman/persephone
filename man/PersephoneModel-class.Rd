@@ -3,8 +3,10 @@
 \docType{class}
 \name{PersephoneModel-class}
 \alias{PersephoneModel-class}
-\alias{PersephoneQuasiBin-class}
+\alias{PersephoneBin-class}
+\alias{PersephoneMixedBin-class}
 \alias{PersephoneCumLink-class}
+\alias{PersephoneMixedCumLink-class}
 \title{\code{persephone} Model Classes}
 \value{
 An S4 object of the appropriate class.
@@ -18,10 +20,16 @@ prediction.
 Details on the \code{PersephoneCumLink} class:
 Model fitting is based on \code{ordinal::clm()}. Information on arguments
 \code{formula}, \code{nominal}, \code{scale}, \code{link} and \code{threshold} can be found there.
+Details on the \code{PersephoneMixedCumLink} class:
+Model fitting is based on \code{ordinal::clm2()}. Information on arguments
+\code{formula}, \code{nominal}, \code{scale}, \code{link}, \code{threshold} and \code{nAGQ} can be found
+there.
 }
 \section{Slots}{
 
 \describe{
+\item{\code{label}}{character. The object's label.}
+
 \item{\code{region}}{an object of class Region. A region of interest. See package
 \code{cronus} for more details}
 
@@ -42,6 +50,10 @@ Model fitting is based on \code{ordinal::clm()}. Information on arguments
 \item{\code{link}}{character. The link function used.}
 
 \item{\code{threshold}}{character. The type of thresholds used. See details.}
+
+\item{\code{nAGQ}}{numeric. The number of quadrature points to be used in the
+adaptive Gauss-Hermite quadrature approximation to the marginal likelihood.
+See details.}
 }}
 
 \examples{
@@ -52,7 +64,7 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

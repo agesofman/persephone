@@ -38,7 +38,7 @@ The package is built using the S4 class system, offering simplicity to new R use
 
 ```{r creation}
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

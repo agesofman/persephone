@@ -9,6 +9,9 @@ output:
 css: custom.css
 params: 
   object: NULL
+  test: NULL
+  maxsam: NULL
+  seed: NULL
 ---
 
 ---

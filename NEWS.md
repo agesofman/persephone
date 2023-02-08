@@ -1,3 +1,10 @@
+# persephone 0.1.0
+
+* Added `MixedBin` and `MixedCumLink` models.
+* Added `contrast()` function.
+* Added `get_*()` functions.
+* Updated documentation.
+
 # persephone 0.0.4
 
 * Fixed bug in tests.

@@ -3,17 +3,23 @@
 \name{predict}
 \alias{predict}
 \alias{predict,PersephoneModelList-method}
-\alias{predict,PersephoneQuasiBin-method}
+\alias{predict,PersephoneBin-method}
+\alias{predict,PersephoneMixedBin-method}
 \alias{predict,PersephoneCumLink-method}
+\alias{predict,PersephoneMixedCumLink-method}
 \title{\code{persephone} model prediction}
 \usage{
 predict(object, ...)
 
 \S4method{predict}{PersephoneModelList}(object, pdata)
 
-\S4method{predict}{PersephoneQuasiBin}(object, pdata)
+\S4method{predict}{PersephoneBin}(object, pdata)
+
+\S4method{predict}{PersephoneMixedBin}(object, pdata)
 
 \S4method{predict}{PersephoneCumLink}(object, pdata)
+
+\S4method{predict}{PersephoneMixedCumLink}(object, pdata)
 }
 \arguments{
 \item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
@@ -37,7 +43,7 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

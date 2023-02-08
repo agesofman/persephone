@@ -16,7 +16,8 @@
 #' @return an object of class `PersephoneModel` or `PersephoneModelList`.
 #'
 #' @import dplyr
-#' @importFrom ordinal clm
+#' @importFrom lme4 glmer glmerControl
+#' @importFrom ordinal clm clm2 clmm2 clmm2.control
 #' @export
 #'
 #' @examples
@@ -27,7 +28,7 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneQuasiBin",
+#' object1 <- new("PersephoneBin",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
@@ -82,21 +83,48 @@ setMethod("fit",
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneQuasiBin"),
+          signature = c(object = "PersephoneBin"),
           definition = function(object, ...) {
 
   # Update object
   update(object, ...)
 
   # Model Fitting
-  for (stage in get_stages(object)){
+  for (stage in get_stages(object)[-1]){
     data_stage <- dplyr::filter(object@data, .data$Stage == stage)
     data_stage$weights <- rep(100, nrow(data_stage))
     suppressWarnings(
       object@model[[stage]] <- glm(formula  = object@formula,
-                                   family   = stats::quasibinomial(link = object@link),
+                                   family   = stats::binomial(link = object@link),
                                    data     = data_stage,
                                    weights  = weights)
+    )
+  }
+
+  # Return the object
+  object@fitted <- predict(object, object@data)
+  object
+
+})
+
+#' @rdname fit
+setMethod("fit",
+          signature = c(object = "PersephoneMixedBin"),
+          definition = function(object, ...) {
+
+  # Update object
+  update(object, ...)
+
+  # Model Fitting
+  for (stage in get_stages(object)[-1]){
+    data_stage <- dplyr::filter(object@data, .data$Stage == stage)
+    data_stage$weights <- rep(100, nrow(data_stage))
+    suppressWarnings(
+      object@model[[stage]] <- lme4::glmer(formula  = object@formula,
+                                           family   = stats::binomial(link = object@link),
+                                           data     = data_stage,
+                                           weights  = weights,
+                                           nAGQ     = object@nAGQ)
     )
   }
 
@@ -123,6 +151,48 @@ setMethod("fit",
                  threshold = .(object@threshold),
                  data      = .(object@data),
                  weights   = Percentage)))
+
+  # Return the object
+  object@fitted <- predict(object, object@data)
+  object
+
+})
+
+#' @rdname fit
+setMethod("fit",
+          signature = c(object = "PersephoneMixedCumLink"),
+          definition = function(object, ...) {
+
+  # Update object
+  update(object, ...)
+
+  object@data$weights <- round(100*object@data$Percentage)
+  object@data$Season <- factor(object@data$Season)
+
+  # Model Fitting
+  # object@model <- eval(bquote(
+  #   ordinal::clmm(formula  = .(formula(object@formula)),
+  #                 link      = .(object@link),
+  #                 threshold = .(object@threshold),
+  #                 data      = object@data,
+  #                 weights   = weights,
+  #                 Hess      = TRUE,
+  #                 nAGQ      = .(object@nAGQ),
+  #                 control   = ordinal::clmm.control(method = "nlminb",
+  #                                                   maxIter = 200,
+  #                                                   gradTol = 1e-3,
+  #                                                   maxLineIter = 200,
+  #                                                   innerCtrl = "noWarn"))))
+
+  object@model <- eval(bquote(
+    ordinal::clmm2(location  = .(formula(object@formula)),
+                   random    = Season,
+                   link      = .(object@link),
+                   data      = object@data,
+                   weights   = weights,
+                   Hess      = TRUE,
+                   nAGQ      = .(object@nAGQ),
+                   control   = ordinal::clmm2.control(method = "ucminf"))))
 
   # Return the object
   object@fitted <- predict(object, object@data)

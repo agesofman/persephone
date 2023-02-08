@@ -3,17 +3,23 @@
 \name{fit}
 \alias{fit}
 \alias{fit,PersephoneModelList-method}
-\alias{fit,PersephoneQuasiBin-method}
+\alias{fit,PersephoneBin-method}
+\alias{fit,PersephoneMixedBin-method}
 \alias{fit,PersephoneCumLink-method}
+\alias{fit,PersephoneMixedCumLink-method}
 \title{Persephone model fitting}
 \usage{
 fit(object, ...)
 
 \S4method{fit}{PersephoneModelList}(object, ...)
 
-\S4method{fit}{PersephoneQuasiBin}(object, ...)
+\S4method{fit}{PersephoneBin}(object, ...)
+
+\S4method{fit}{PersephoneMixedBin}(object, ...)
 
 \S4method{fit}{PersephoneCumLink}(object, ...)
+
+\S4method{fit}{PersephoneMixedCumLink}(object, ...)
 }
 \arguments{
 \item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
@@ -36,7 +42,7 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneQuasiBin",
+object1 <- new("PersephoneBin",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,

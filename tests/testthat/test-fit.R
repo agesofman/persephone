@@ -6,7 +6,7 @@ test_that("fitting works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create a model
-  object1 <- new("PersephoneQuasiBin",
+  object1 <- new("PersephoneBin",
                  region = region,
                  crop = "Corn",
                  data = progress_ne$Corn,
@@ -29,7 +29,7 @@ test_that("fitting works", {
 
   # Check classes
   expect_s3_class(object, "PersephoneModelList")
-  expect_s4_class(object[[1]], "PersephoneQuasiBin")
+  expect_s4_class(object[[1]], "PersephoneBin")
   expect_s4_class(object[[2]], "PersephoneCumLink")
 
 })

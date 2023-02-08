@@ -6,13 +6,13 @@ test_that("class definition works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create a model
-  object1 <- new("PersephoneQuasiBin",
+  object1 <- new("PersephoneBin",
                  region = region,
                  crop = "Corn",
                  data = progress_ne$Corn,
                  formula = "CumPercentage ~ Time + agdd") # PersephoneModel
 
-  expect_s4_class(object1, "PersephoneQuasiBin")
+  expect_s4_class(object1, "PersephoneBin")
 
   # Create another model
   object2 <- new("PersephoneCumLink",
