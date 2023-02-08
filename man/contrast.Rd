@@ -22,6 +22,12 @@ contrast(object, ...)
 \item{...}{extra arguments.}
 
 \item{by}{character. Currently, only "AICc" is accepted.}
+
+\item{save}{logical. Should the result be saved?}
+
+\item{name}{character. The file name.}
+
+\item{path}{character. The path to store the file.}
 }
 \value{
 If \code{by = "aicc"}, a list of objects of class \code{aictab}.

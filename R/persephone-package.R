@@ -5,6 +5,7 @@
 #' @importFrom cronus calc_percentage
 #' @importFrom grDevices dev.off
 #' @importFrom grDevices pdf
+#' @importFrom methods .hasSlot
 #' @importFrom methods slot<-
 #' @importFrom stats binomial
 #' @importFrom stats formula

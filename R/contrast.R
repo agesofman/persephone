@@ -10,6 +10,9 @@
 #'
 #' @param object an object of class `PersephoneModelList`.
 #' @param by character. Currently, only "AICc" is accepted.
+#' @param save logical. Should the result be saved?
+#' @param name character. The file name.
+#' @param path character. The path to store the file.
 #' @param ... extra arguments.
 #'
 #' @return If `by = "aicc"`, a list of objects of class `aictab`.

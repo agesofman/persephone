@@ -98,7 +98,7 @@ setMethod("get_region",
   update(object, ...)
 
   # Get models
-  lapply(object, get_region)
+  sapply(object, get_region)
 
 })
 

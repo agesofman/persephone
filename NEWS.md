@@ -1,3 +1,7 @@
+# persephone 0.1.1
+
+* Fixed bug in tests.
+
 # persephone 0.1.0
 
 * Added `MixedBin` and `MixedCumLink` models.

@@ -24,6 +24,6 @@ test_that("reporting works", {
 
   # Report
   expect_no_error(report(object, name = "example_report",
-                         path = tempdir()))
+                         path = tempdir(), maxsam = 10))
 
 })
