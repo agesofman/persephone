@@ -14,7 +14,7 @@ prediction."><meta property="og:image" content="https://agesofman.github.io/pers
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,13 +63,21 @@ prediction.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Details on the <code>PersephoneCumLink</code> class:
 Model fitting is based on <code><a href="https://rdrr.io/pkg/ordinal/man/clm.html" class="external-link">ordinal::clm()</a></code>. Information on arguments
-<code>formula</code>, <code>nominal</code>, <code>scale</code>, <code>link</code> and <code>threshold</code> can be found there.</p>
+<code>formula</code>, <code>nominal</code>, <code>scale</code>, <code>link</code> and <code>threshold</code> can be found there.
+Details on the <code>PersephoneMixedCumLink</code> class:
+Model fitting is based on <code><a href="https://rdrr.io/pkg/ordinal/man/clmOld.html" class="external-link">ordinal::clm2()</a></code>. Information on arguments
+<code>formula</code>, <code>nominal</code>, <code>scale</code>, <code>link</code>, <code>threshold</code> and <code>nAGQ</code> can be found
+there.</p>
     </div>
     <div class="section level2">
     <h2 id="slots">Slots<a class="anchor" aria-label="anchor" href="#slots"></a></h2>
     
 
-<dl><dt><code>region</code></dt>
+<dl><dt><code>label</code></dt>
+<dd><p>character. The object's label.</p></dd>
+
+
+<dt><code>region</code></dt>
 <dd><p>an object of class Region. A region of interest. See package
 <code>cronus</code> for more details</p></dd>
 
@@ -110,6 +118,12 @@ Model fitting is based on <code><a href="https://rdrr.io/pkg/ordinal/man/clm.htm
 <dd><p>character. The type of thresholds used. See details.</p></dd>
 
 
+<dt><code>nAGQ</code></dt>
+<dd><p>numeric. The number of quadrature points to be used in the
+adaptive Gauss-Hermite quadrature approximation to the marginal likelihood.
+See details.</p></dd>
+
+
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -126,7 +140,7 @@ Model fitting is based on <code><a href="https://rdrr.io/pkg/ordinal/man/clm.htm
 <span class="r-in"><span>                 div <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, state <span class="op">=</span> <span class="st">"Nebraska"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a model</span></span></span>
-<span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneQuasiBin"</span>,</span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneBin"</span>,</span></span>
 <span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
 <span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Corn"</span>,</span></span>
 <span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Corn</span>,</span></span>

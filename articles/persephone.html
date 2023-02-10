@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,7 +121,7 @@ information concerning the model of interest. These objects are of class
 class <code>PersephoneModelList</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a model</span></span>
-<span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneQuasiBin"</span>,</span>
+<span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneBin"</span>,</span>
 <span>               region <span class="op">=</span> <span class="va">region</span>,</span>
 <span>               crop <span class="op">=</span> <span class="st">"Corn"</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Corn</span>,</span>
@@ -138,16 +138,16 @@ class <code>PersephoneModelList</code>.</p>
 <span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">object1</span>, <span class="va">object2</span><span class="op">)</span> <span class="co"># PersephoneModelList</span></span>
 <span></span>
 <span><span class="co"># Tools</span></span>
-<span><span class="fu"><a href="../reference/get_crops.html">get_crops</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_class.html">get_crops</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       Corn   Soybeans </span></span>
 <span><span class="co">#&gt;     "Corn" "Soybeans"</span></span>
-<span><span class="fu"><a href="../reference/get_crops.html">get_region</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_class.html">get_region</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       Corn   Soybeans </span></span>
 <span><span class="co">#&gt; "nebraska" "nebraska"</span></span>
-<span><span class="fu"><a href="../reference/get_crops.html">get_index</a></span><span class="op">(</span><span class="va">object</span>, crop <span class="op">=</span> <span class="st">"Corn"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_class.html">get_index</a></span><span class="op">(</span><span class="va">object</span>, crop <span class="op">=</span> <span class="st">"Corn"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Corn </span></span>
 <span><span class="co">#&gt;    1</span></span>
-<span><span class="fu"><a href="../reference/get_crops.html">get_stages</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_class.html">get_stages</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $Corn</span></span>
 <span><span class="co">#&gt; [1] Preseason Planted   Emerged   Silking   Dough     Dented    Mature   </span></span>
 <span><span class="co">#&gt; [8] Harvested</span></span>
@@ -157,7 +157,7 @@ class <code>PersephoneModelList</code>.</p>
 <span><span class="co">#&gt; [1] Preseason       Planted         Emerged         Blooming       </span></span>
 <span><span class="co">#&gt; [5] Setting Pods    Dropping Leaves Harvested      </span></span>
 <span><span class="co">#&gt; 7 Levels: Preseason &lt; Planted &lt; Emerged &lt; Blooming &lt; ... &lt; Harvested</span></span>
-<span><span class="fu"><a href="../reference/get_crops.html">get_seasons</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_class.html">get_seasons</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $Corn</span></span>
 <span><span class="co">#&gt;  [1] 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016</span></span>
 <span><span class="co">#&gt; [16] 2017 2018 2019 2020 2021</span></span>
@@ -251,38 +251,10 @@ presentation of the object.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; --------------------------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Stage: Preseason </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
-<span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Deviance Residuals: </span></span>
-<span><span class="co">#&gt;       Min         1Q     Median         3Q        Max  </span></span>
-<span><span class="co">#&gt; 2.107e-07  2.107e-07  2.107e-07  2.107e-07  2.107e-07  </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  3.031e+01  7.626e-02   397.5   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time         1.406e-09  1.374e-02     0.0        1    </span></span>
-<span><span class="co">#&gt; agdd        -1.338e-09  2.851e-02     0.0        1    </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 1.871151e-11)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 0.0000e+00  on 759  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 3.3751e-11  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of Fisher Scoring iterations: 25</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; --------------------------------------------------</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Stage: Planted </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -290,18 +262,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -8.7769   0.0000   0.0007   0.0768   9.3890  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -6.19860    0.17092 -36.266   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time         1.14698    0.05762  19.908   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd        -0.25097    0.15619  -1.607    0.109    </span></span>
+<span><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -6.19860    0.09464 -65.498  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; Time         1.14698    0.03190  35.954  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd        -0.25097    0.08648  -2.902  0.00371 ** </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 3.261797)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 50564.0  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  2081.7  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2650</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 9</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -310,7 +282,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Emerged </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -318,18 +290,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -6.6953   0.0000   0.0001   0.0274   9.7855  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -7.93476    0.21441 -37.007  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; Time         0.89249    0.05324  16.765  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd         0.52956    0.12354   4.287 2.05e-05 ***</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -7.93476    0.13161 -60.291  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; Time         0.89249    0.03268  27.313  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd         0.52956    0.07583   6.984 2.87e-12 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 2.654222)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 63542  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1797  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2341</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 8</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -338,7 +310,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Silking </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -346,18 +318,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -8.8360  -0.0770   0.0009   0.0386   9.5608  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -16.67080    0.44724  -37.27   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time          0.66750    0.05228   12.77   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd          0.82552    0.07327   11.27   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -16.67080    0.31259  -53.33   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; Time          0.66750    0.03654   18.27   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd          0.82552    0.05121   16.12   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 2.047128)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 93896.2  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1442.6  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 1944.8</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -366,7 +338,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Dough </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -374,18 +346,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -9.2571  -0.2060  -0.0043   0.1129   6.7577  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -17.35836    0.33518 -51.789   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time          0.67652    0.03315  20.409   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd          0.46895    0.04884   9.602   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -17.35836    0.23663  -73.36   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; Time          0.67652    0.02340   28.91   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd          0.46895    0.03448   13.60   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 2.006412)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 93294.8  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1374.4  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2015.2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -394,7 +366,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Dented </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -402,18 +374,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -8.7325  -0.1944  -0.0040   0.1664   7.0836  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -19.29789    0.32756  -58.91   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time          0.66046    0.02493   26.49   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd          0.45780    0.04135   11.07   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -19.29789    0.23010  -83.87   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; Time          0.66046    0.01751   37.72   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd          0.45780    0.02905   15.76   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 2.026526)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 91405.6  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1443.6  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2112</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -422,7 +394,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Mature </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -430,18 +402,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -7.5626  -0.1557  -0.0019   0.2545   8.0087  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -23.43785    0.37736  -62.11   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time          0.70434    0.01617   43.56   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd          0.43320    0.03249   13.33   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -23.43785    0.28027  -83.63   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; Time          0.70434    0.01201   58.65   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd          0.43320    0.02413   17.95   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 1.812851)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 83938.8  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1394.3  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2104.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -450,7 +422,7 @@ presentation of the object.</p>
 <span><span class="co">#&gt; Stage: Harvested </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; glm(formula = object@formula, family = stats::quasibinomial(link = object@link), </span></span>
+<span><span class="co">#&gt; glm(formula = object@formula, family = stats::binomial(link = object@link), </span></span>
 <span><span class="co">#&gt;     data = data_stage, weights = weights)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
@@ -458,18 +430,18 @@ presentation of the object.</p>
 <span><span class="co">#&gt; -7.3081  -0.2838  -0.0081  -0.0002   8.8833  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) -22.79576    0.43843  -51.99   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; Time          0.58845    0.01104   53.32   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; agdd          0.37036    0.02904   12.76   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt;               Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -22.795760   0.281104  -81.09   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; Time          0.588451   0.007075   83.17   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; agdd          0.370365   0.018617   19.89   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for quasibinomial family taken to be 2.432584)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Null deviance: 63046.0  on 759  degrees of freedom</span></span>
 <span><span class="co">#&gt; Residual deviance:  1975.8  on 757  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: NA</span></span>
+<span><span class="co">#&gt; AIC: 2891.6</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; </span></span>
