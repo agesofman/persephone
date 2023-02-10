@@ -1,3 +1,7 @@
+# persephone 0.1.2
+
+* Changed github actions.
+
 # persephone 0.1.1
 
 * Fixed bug in tests.
