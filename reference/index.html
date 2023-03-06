@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,17 +53,17 @@
 
       <dl><dt>
           
-          <code><a href="PersephoneModel-class.html">PersephoneModel-class</a></code> <code><a href="PersephoneModel-class.html">PersephoneBin-class</a></code> <code><a href="PersephoneModel-class.html">PersephoneMixedBin-class</a></code> <code><a href="PersephoneModel-class.html">PersephoneCumLink-class</a></code> <code><a href="PersephoneModel-class.html">PersephoneMixedCumLink-class</a></code> 
+          <code><a href="ProgressModel-class.html">ProgressModel-class</a></code> <code><a href="ProgressModel-class.html">ProgressBM-class</a></code> <code><a href="ProgressModel-class.html">ProgressBMM-class</a></code> <code><a href="ProgressModel-class.html">ProgressCLM-class</a></code> <code><a href="ProgressModel-class.html">ProgressCLMM-class</a></code> <code><a href="ProgressModel-class.html">ProgressSRF-class</a></code> 
         </dt>
-        <dd><code>persephone</code> Model Classes</dd>
+        <dd><code>persephone</code> Model classes</dd>
       </dl><dl><dt>
           
-          <code><a href="armspe.html">armspe()</a></code> 
+          <code><a href="aicc.html">aicc()</a></code> 
         </dt>
-        <dd>Average Root Mean Square Prediction Error</dd>
+        <dd>Akaike Information Criterion (corrected)</dd>
       </dl><dl><dt>
           
-          <code><a href="c-PersephoneModel-method.html">c(<i>&lt;PersephoneModel&gt;</i>)</a></code> 
+          <code><a href="c-ProgressModel-method.html">c(<i>&lt;ProgressModel&gt;</i>)</a></code> 
         </dt>
         <dd>Concatenate</dd>
       </dl><dl><dt>
@@ -78,6 +78,11 @@
         <dd>contrast models</dd>
       </dl><dl><dt>
           
+          <code><a href="create.html">create()</a></code> 
+        </dt>
+        <dd>Create new objects</dd>
+      </dl><dl><dt>
+          
           <code><a href="create_title.html">create_title()</a></code> 
         </dt>
         <dd>Create plot title</dd>
@@ -85,22 +90,27 @@
           
           <code><a href="crossval.html">crossval()</a></code> 
         </dt>
-        <dd>Cross - Validation</dd>
+        <dd>Cross-Validation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_progress.html">data_progress</a></code> 
+        </dt>
+        <dd>Corn and Soybeans progress data for Nebraska</dd>
+      </dl><dl><dt>
+          
+          <code><a href="evaluate.html">evaluate()</a></code> 
+        </dt>
+        <dd>Evaluate model performance</dd>
       </dl><dl><dt>
           
           <code><a href="fit.html">fit()</a></code> 
         </dt>
-        <dd>Persephone model fitting</dd>
+        <dd>Progress model fitting</dd>
       </dl><dl><dt>
           
-          <code><a href="get_class.html">get_class()</a></code> <code><a href="get_class.html">get_region()</a></code> <code><a href="get_class.html">get_label()</a></code> <code><a href="get_class.html">get_formula()</a></code> <code><a href="get_class.html">get_model()</a></code> <code><a href="get_class.html">get_crops()</a></code> <code><a href="get_class.html">get_index()</a></code> <code><a href="get_class.html">get_stages()</a></code> <code><a href="get_class.html">get_seasons()</a></code> 
+          <code><a href="get_class.html">get_class()</a></code> <code><a href="get_class.html">get_region()</a></code> <code><a href="get_class.html">get_label()</a></code> <code><a href="get_class.html">get_formula()</a></code> <code><a href="get_class.html">get_model()</a></code> <code><a href="get_class.html">get_crops()</a></code> <code><a href="get_class.html">get_index()</a></code> <code><a href="get_class.html">get_stages()</a></code> <code><a href="get_class.html">get_seasons()</a></code> <code><a href="get_class.html">get_link()</a></code> 
         </dt>
         <dd>Get object slots</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_combinations.html">get_combinations()</a></code> 
-        </dt>
-        <dd>Get Combinations</dd>
       </dl><dl><dt>
           
           <code><a href="plot.html">plot()</a></code> 
@@ -108,19 +118,19 @@
         <dd>Plot</dd>
       </dl><dl><dt>
           
-          <code><a href="plot_metrics.html">plot_metrics()</a></code> 
+          <code><a href="plot_contrast.html">plot_contrast()</a></code> 
         </dt>
-        <dd>Plot Metrics</dd>
+        <dd>Plot model contrast</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_rmspe.html">plot_rmspe()</a></code> 
+        </dt>
+        <dd>Plot RMSPE</dd>
       </dl><dl><dt>
           
           <code><a href="predict.html">predict()</a></code> 
         </dt>
-        <dd><code>persephone</code> model prediction</dd>
-      </dl><dl><dt>
-          
-          <code><a href="progress_ne.html">progress_ne</a></code> 
-        </dt>
-        <dd>Corn and Soybeans progress data for Nebraska</dd>
+        <dd>Progress model prediction</dd>
       </dl><dl><dt>
           
           <code><a href="report.html">report()</a></code> 
@@ -135,7 +145,7 @@
           
           <code><a href="summary.html">summary()</a></code> 
         </dt>
-        <dd>Persephone model summary</dd>
+        <dd>Progress model summary</dd>
       </dl><dl><dt>
           
           <code><a href="update.html">update()</a></code> 

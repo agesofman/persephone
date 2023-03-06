@@ -31,13 +31,13 @@
     <loc>https://agesofman.github.io/persephone/news/index.html</loc>
   </url>
   <url>
-    <loc>https://agesofman.github.io/persephone/reference/PersephoneModel-class.html</loc>
+    <loc>https://agesofman.github.io/persephone/reference/ProgressModel-class.html</loc>
   </url>
   <url>
-    <loc>https://agesofman.github.io/persephone/reference/armspe.html</loc>
+    <loc>https://agesofman.github.io/persephone/reference/aicc.html</loc>
   </url>
   <url>
-    <loc>https://agesofman.github.io/persephone/reference/c-PersephoneModel-method.html</loc>
+    <loc>https://agesofman.github.io/persephone/reference/c-ProgressModel-method.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/carousel.html</loc>
@@ -46,19 +46,25 @@
     <loc>https://agesofman.github.io/persephone/reference/contrast.html</loc>
   </url>
   <url>
+    <loc>https://agesofman.github.io/persephone/reference/create.html</loc>
+  </url>
+  <url>
     <loc>https://agesofman.github.io/persephone/reference/create_title.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/crossval.html</loc>
   </url>
   <url>
+    <loc>https://agesofman.github.io/persephone/reference/data_progress.html</loc>
+  </url>
+  <url>
+    <loc>https://agesofman.github.io/persephone/reference/evaluate.html</loc>
+  </url>
+  <url>
     <loc>https://agesofman.github.io/persephone/reference/fit.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/get_class.html</loc>
-  </url>
-  <url>
-    <loc>https://agesofman.github.io/persephone/reference/get_combinations.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/index.html</loc>
@@ -73,13 +79,13 @@
     <loc>https://agesofman.github.io/persephone/reference/plot.html</loc>
   </url>
   <url>
-    <loc>https://agesofman.github.io/persephone/reference/plot_metrics.html</loc>
+    <loc>https://agesofman.github.io/persephone/reference/plot_contrast.html</loc>
+  </url>
+  <url>
+    <loc>https://agesofman.github.io/persephone/reference/plot_rmspe.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/predict.html</loc>
-  </url>
-  <url>
-    <loc>https://agesofman.github.io/persephone/reference/progress_ne.html</loc>
   </url>
   <url>
     <loc>https://agesofman.github.io/persephone/reference/report.html</loc>

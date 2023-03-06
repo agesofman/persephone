@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,27 +48,82 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rmspe</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rmspe</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ProgressModel</span></span>
+<span><span class="fu">rmspe</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ProgressModelList</span></span>
+<span><span class="fu">rmspe</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
-<dd><p>data.frame. A data.frame with columns named "Stage", "Season",
-"Time", "Date" and "Percentage".</p></dd>
+    <dl><dt>object</dt>
+<dd><p>An object of class <code>ProgressModel</code> or <code>ProgressModelList</code>.</p></dd>
 
 
-<dt>y</dt>
-<dd><p>data.frame. Same structure as <code>x</code>.</p></dd>
+<dt>...</dt>
+<dd><p>extra arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data.frame with columns Stage, Time and rmspe.</p>
+<p>A data.frame with columns Stage, Time and rmspe or an object of class
+<code>ProgressModel</code> with its <code>metrics</code> slot altered.</p>
+
+
+<p>An object identical to <code>object</code>, with the <code>metrics</code> slot(s) altered.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Create a Region object</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/agesofman/cronus" class="external-link">cronus</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://agesofman.github.io/cronus/reference/Region-class.html" class="external-link">Region</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"nebraska"</span>, type <span class="op">=</span> <span class="st">"us state"</span>,</span></span>
+<span class="r-in"><span>                 div <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, state <span class="op">=</span> <span class="st">"Nebraska"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create a model</span></span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressBM"</span>,</span></span>
+<span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
+<span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Corn"</span>,</span></span>
+<span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Corn</span>,</span></span>
+<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"CumPercentage ~ Time + agdd"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create another model</span></span></span>
+<span class="r-in"><span><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressCLM"</span>,</span></span>
+<span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
+<span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Soybeans"</span>,</span></span>
+<span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Soybeans</span>,</span></span>
+<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"Stage ~ Time + agdd + adayl"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Concatenate the models</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">object1</span>, <span class="va">object2</span><span class="op">)</span> <span class="co"># ProgressModelList</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Fit</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit.html">fit</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Plot</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">object</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span>, seasons <span class="op">=</span> <span class="fl">2002</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Predict</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="predict.html">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">progress_ne</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Evaluate</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="crossval.html">crossval</a></span><span class="op">(</span><span class="va">object</span>, maxsam <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_metrics</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Summarize</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Report</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="report.html">report</a></span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">"example_report"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

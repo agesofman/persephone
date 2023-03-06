@@ -12,7 +12,7 @@ predictions, evaluation metrics and corresponding plots."><meta property="og:ima
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,31 +53,24 @@ predictions, evaluation metrics and corresponding plots.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">report</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for PersephoneModel</span></span>
+<span><span class="co"># S4 method for ProgressModel</span></span>
 <span><span class="fu">report</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu">cronus</span><span class="fu">::</span><span class="fu"><a href="https://agesofman.github.io/cronus/reference/set_path_hermes.html" class="external-link">get_path_hermes</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  test <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  maxsam <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for PersephoneModelList</span></span>
-<span><span class="fu">report</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  test <span class="op">=</span> <span class="fl">0.25</span>,</span>
-<span>  maxsam <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># S4 method for ProgressModelList</span></span>
+<span><span class="fu">report</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>an object of class <code>PersephoneModel</code> or <code>PersephoneModelList</code>.</p></dd>
+<dd><p>an object of class <code>ProgressModel</code> or <code>ProgressModelList</code>.</p></dd>
 
 
 <dt>...</dt>
@@ -93,15 +86,15 @@ predictions, evaluation metrics and corresponding plots.</p>
 
 
 <dt>test</dt>
-<dd><p>Passed to <code><a href="crossval.html">persephone::crossval()</a></code>.</p></dd>
+<dd><p>Passed to <code><a href="evaluate.html">persephone::evaluate()</a></code>.</p></dd>
 
 
 <dt>maxsam</dt>
-<dd><p>Passed to <code><a href="crossval.html">persephone::crossval()</a></code>.</p></dd>
+<dd><p>Passed to <code><a href="evaluate.html">persephone::evaluate()</a></code>.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>Passed to <code><a href="crossval.html">persephone::crossval()</a></code>.</p></dd>
+<dd><p>Passed to <code><a href="evaluate.html">persephone::evaluate()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -120,21 +113,21 @@ predictions, evaluation metrics and corresponding plots.</p>
 <span class="r-in"><span>                 div <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, state <span class="op">=</span> <span class="st">"Nebraska"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a model</span></span></span>
-<span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneBin"</span>,</span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressBM"</span>,</span></span>
 <span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
 <span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Corn"</span>,</span></span>
 <span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Corn</span>,</span></span>
-<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"CumPercentage ~ Time + agdd"</span><span class="op">)</span> <span class="co"># PersephoneModel</span></span></span>
+<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"CumPercentage ~ Time + agdd"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create another model</span></span></span>
-<span class="r-in"><span><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"PersephoneCumLink"</span>,</span></span>
+<span class="r-in"><span><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressCLM"</span>,</span></span>
 <span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
 <span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Soybeans"</span>,</span></span>
 <span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Soybeans</span>,</span></span>
-<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"Stage ~ Time + agdd + adayl"</span><span class="op">)</span> <span class="co"># PersephoneModel</span></span></span>
+<span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"Stage ~ Time + agdd + adayl"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Concatenate the models</span></span></span>
-<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">object1</span>, <span class="va">object2</span><span class="op">)</span> <span class="co"># PersephoneModelList</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">object1</span>, <span class="va">object2</span><span class="op">)</span> <span class="co"># ProgressModelList</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit</span></span></span>
 <span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit.html">fit</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
@@ -147,13 +140,13 @@ predictions, evaluation metrics and corresponding plots.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Evaluate</span></span></span>
 <span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="crossval.html">crossval</a></span><span class="op">(</span><span class="va">object</span>, maxsam <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plot_metrics.html">plot_metrics</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_metrics</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Summarize</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Report</span></span></span>
-<span class="r-in"><span><span class="fu">report</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">"example_report"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">"example_report"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
