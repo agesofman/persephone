@@ -6,12 +6,12 @@ test_that("update works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create model
-  object <- new("PersephoneCumLink", region = region, crop = "Corn", model = "A")
+  object <- new("ProgressCLM", region = region, crop = "Corn", model = "A")
 
   # Update model
   expect_no_error(object <- update(object, region = region, crop = "Soybeans", model = "B"))
 
   # Check class
-  expect_s4_class(object, "PersephoneCumLink")
+  expect_s4_class(object, "ProgressCLM")
 
 })

@@ -1,22 +1,25 @@
 #-------------------------------------------------------------------------------
-# Class Definitions
+# Class definitions
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' @title `persephone` Model Classes
+#' @title `persephone` Model classes
 #'
 #' @description
-#' `persephone` defines a number of model classes. Objects belonging to a
-#'  model class can be passed to the main package functions for fitting and
-#'  prediction.
+#' Package `persephone` defines a number of model classes. The main functions
+#' of the package receive a model object and edit its slots.
 #'
 #' @slot label character. The object's label.
-#' @slot region an object of class Region. A region of interest. See package
-#' `cronus` for more details
-#' @slot data data.frame. The data on which the model will be fitted.
-#' @slot model ANY. An object holding information about the fitting.
-#' @slot fitted data.frame. The fitted data.
-#' @slot metrics list. A list of metrics calculated using `persephone::crossval()`.
+#' @slot region an object of class Region, defined in package `cronus`. A
+#' region of interest.
+#' @slot data an object of class `Progress`, defined in package `cronus`. The
+#' data on which the model will be fitted.
+#' @slot model ANY. An object holding information about the fitting. Filled by
+#' function `fit()`.
+#' @slot fitted an object of class `Progress`, defined in package `cronus`.
+#' The fitted data. Filled by function `fit()`.
+#' @slot metrics an object of class `ProgressMetrics`. The model performance
+#' metrics. Filled by function `evaluate()`.
 #' @slot formula character. The model formula. See details.
 #' @slot nominal character. The nominal effects. See details.
 #' @slot scale character. The scale effects. See details.
@@ -26,22 +29,21 @@
 #' adaptive Gauss-Hermite quadrature approximation to the marginal likelihood.
 #' See details.
 #'
+#' @details
+#'
+#' - ProgressBM is based on `glm()`.
+#' - ProgressBMM is based on `lme4::glmer()`.
+#' - ProgressCLM is based on `ordinal::clm()`.
+#' - ProgressCLMm is based on `ordinal::clm2()`.
+#'
 #' @return An S4 object of the appropriate class.
 #'
-#' @details
-#' Details on the `PersephoneCumLink` class:
-#' Model fitting is based on `ordinal::clm()`. Information on arguments
-#' `formula`, `nominal`, `scale`, `link` and `threshold` can be found there.
-#' Details on the `PersephoneMixedCumLink` class:
-#' Model fitting is based on `ordinal::clm2()`. Information on arguments
-#' `formula`, `nominal`, `scale`, `link`, `threshold` and `nAGQ` can be found
-#' there.
-#'
 #' @importClassesFrom cronus Region
+#' @importFrom cronus Progress ProgressList
 #' @export
 #'
 #' @seealso [persephone::fit()], [persephone::predict()],
-#' [persephone::crossval()], [ordinal::clm()]
+#' [persephone::evaluate()], [ordinal::clm()], [ordinal::clm2()]
 #'
 #' @examples
 #' \dontrun{
@@ -51,49 +53,51 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneBin",
+#' object1 <- new("ProgressBM",
 #'                region = region,
 #'                crop = "Corn",
-#'                data = progress_ne$Corn,
-#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+#'                data = data_progress$Corn,
+#'                formula = "CumPercentage ~ Time + agdd") # ProgressModel
 #'
 #' # Create another model
-#' object2 <- new("PersephoneCumLink",
+#' object2 <- new("ProgressCLM",
 #'                region = region,
 #'                crop = "Soybeans",
-#'                data = progress_ne$Soybeans,
-#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'                data = data_progress$Soybeans,
+#'                formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 #'
 #' # Concatenate the models
-#' object <- c(object1, object2) # PersephoneModelList
+#' object <- c(object1, object2) # ProgressModelList
 #' }
-setClass("PersephoneModel",
+setClass("ProgressModel",
          slots = list(label   = "character",
                       region  = "Region",
                       crop    = "character",
-                      data    = "data.frame",
+                      data    = "Progress",
                       model   = "ANY",
-                      fitted  = "data.frame",
+                      fitted  = "Progress",
                       metrics = "list"),
          prototype = list(label   = "",
-                          region  = NULL,
+                          region  = cronus::Region(),
                           crop    = "",
-                          data    = data.frame(),
+                          data    = cronus::Progress(),
                           model   = NULL,
-                          fitted  = data.frame(),
+                          fitted  = cronus::Progress(),
                           metrics = list()))
 
-#' @rdname PersephoneModel-class
-setClass("PersephoneBin",
-         contains  = "PersephoneModel",
+setOldClass(c("ProgressModelList", "list"))
+
+#' @rdname ProgressModel-class
+setClass("ProgressBM",
+         contains  = "ProgressModel",
          slots     = list(formula = "character",
                           link    = "character"),
          prototype = list(formula = "",
                           link = "logit"))
 
-#' @rdname PersephoneModel-class
-setClass("PersephoneMixedBin",
-         contains  = "PersephoneModel",
+#' @rdname ProgressModel-class
+setClass("ProgressBMM",
+         contains  = "ProgressModel",
          slots     = list(formula = "character",
                           link    = "character",
                           nAGQ    = "numeric"),
@@ -101,9 +105,9 @@ setClass("PersephoneMixedBin",
                           link = "logit",
                           nAGQ = 1))
 
-#' @rdname PersephoneModel-class
-setClass("PersephoneCumLink",
-         contains = "PersephoneModel",
+#' @rdname ProgressModel-class
+setClass("ProgressCLM",
+         contains = "ProgressModel",
          slots = list(formula   = "character",
                       scale     = "character",
                       nominal   = "character",
@@ -115,9 +119,9 @@ setClass("PersephoneCumLink",
                           link = "logit",
                           threshold = "flexible"))
 
-#' @rdname PersephoneModel-class
-setClass("PersephoneMixedCumLink",
-         contains = "PersephoneModel",
+#' @rdname ProgressModel-class
+setClass("ProgressCLMM",
+         contains = "ProgressModel",
          slots = list(formula   = "character",
                       scale     = "character",
                       nominal   = "character",
@@ -133,4 +137,20 @@ setClass("PersephoneMixedCumLink",
                           threshold = "flexible",
                           nAGQ = 1))
 
-setOldClass("PersephoneModelList")
+#' @rdname ProgressModel-class
+setClass("ProgressSRF",
+         contains = "ProgressModel",
+         slots = list(formula   = "character",
+                      ntree     = "numeric",
+                      mtry      = "numeric",
+                      nodesize  = "numeric",
+                      scaled    = "logical",
+                      samptype  = "character",
+                      seed      = "numeric"),
+         prototype = list(formula = "",
+                          ntree = 100,
+                          mtry  = 1,
+                          nodesize = 5,
+                          scaled = TRUE,
+                          samptype = "swr",
+                          seed = 1))

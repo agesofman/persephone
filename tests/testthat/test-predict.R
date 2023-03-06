@@ -6,31 +6,31 @@ test_that("prediction works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create a model
-  object1 <- new("PersephoneBin",
+  object1 <- new("ProgressBM",
                  region = region,
                  crop = "Corn",
-                 data = progress_ne$Corn,
-                 formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+                 data = data_progress$Corn,
+                 formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
   # Create another model
-  object2 <- new("PersephoneCumLink",
+  object2 <- new("ProgressCLM",
                  region = region,
                  crop = "Soybeans",
-                 data = progress_ne$Soybeans,
-                 formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+                 data = data_progress$Soybeans,
+                 formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
   # Concatenate the models
-  object <- c(object1, object2) # PersephoneModelList
+  object <- c(object1, object2) # ProgressModelList
 
   # Fit
   object <- fit(object)
 
   # Predict
-  data_predicted <- predict(object, progress_ne)
+  data_predicted <- predict(object, data_progress)
 
-  # Tests
-  expect_type(data_predicted, "list")
-  expect_type(data_predicted[[1]], "list")
-  expect_type(data_predicted[[2]], "list")
+  # Check class
+  expect_s3_class(data_predicted, "ProgressList")
+  expect_s3_class(data_predicted[[1]], "Progress")
+  expect_s3_class(data_predicted[[2]], "Progress")
 
 })

@@ -2,7 +2,6 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom cronus calc_percentage
 #' @importFrom grDevices dev.off
 #' @importFrom grDevices pdf
 #' @importFrom methods .hasSlot

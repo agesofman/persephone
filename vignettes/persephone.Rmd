@@ -29,30 +29,30 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Take a look at the data
-head(progress_ne$Corn)
+head(data_progress$Corn)
 ```
 
 ### Model Creation
 
-The package is built using the S4 class system, offering simplicity to new R users as well as ease of development to the project core team. Functions require a single object that holds all the necessary information concerning the model of interest. These objects are of class `PersephoneModel` and can be concatenated into an object of class `PersephoneModelList`.
+The package is built using the S4 class system, offering simplicity to new R users as well as ease of development to the project core team. Functions require a single object that holds all the necessary information concerning the model of interest. These objects are of class `ProgressModel` and can be concatenated into an object of class `ProgressModelList`.
 
 ```{r creation}
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
-               data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               data = data_progress$Corn,
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneCumLink",
+object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
-               data = progress_ne$Soybeans,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               data = data_progress$Soybeans,
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Tools
 get_crops(object)
@@ -65,7 +65,7 @@ get_seasons(object)
 ### Fitting
 
 Fitting the object is straightforward with the function `fit()`, which takes a
-`PersephoneModel` or `PersephoneModelList` object and alters its `model` and `fitted` slots.
+`ProgressModel` or `ProgressModelList` object and alters its `model` and `fitted` slots.
 
 ```{r fitting}
 object <- fit(object)
@@ -77,16 +77,17 @@ plot(object, cumulative = TRUE, seasons = 2002)
 The function `predict()` can take an object that has already been fitted and calculate the model predictions on a different dataset.
 
 ```{r prediction}
-predict(object, progress_ne)
+predict(object, data_progress)
 ```
 
 ### Evaluation
 
-The evaluation of a model can be achieved with the `crossval()` function, which performs Monte-Carlo (or leave-group-out) cross validation and alters the object's `metrics` slots.
+The evaluation of a model can be achieved with the `evaluate()` function, which performs Monte-Carlo (or leave-group-out) cross validation and alters the object's `metrics` slots.
 
 ```{r evaluation}
-object <- crossval(object, maxsam = 100, seed = 1)
-plot_metrics(object)
+object <- evaluate(object, maxsam = 100, seed = 1)
+object[[1]]@metrics
+plot_rmspe(object[[1]])
 ```
 
 ### Summary

@@ -6,27 +6,27 @@ test_that("summary works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create a model
-  object1 <- new("PersephoneBin",
+  object1 <- new("ProgressBM",
                  region = region,
                  crop = "Corn",
-                 data = progress_ne$Corn,
-                 formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+                 data = data_progress$Corn,
+                 formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
   # Create another model
-  object2 <- new("PersephoneCumLink",
+  object2 <- new("ProgressCLM",
                  region = region,
                  crop = "Soybeans",
-                 data = progress_ne$Soybeans,
-                 formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+                 data = data_progress$Soybeans,
+                 formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
   # Concatenate the models
-  object <- c(object1, object2) # PersephoneModelList
+  object <- c(object1, object2) # ProgressModelList
 
   # Fit
   object <- fit(object)
 
   # Evaluate
-  object <- crossval(object, maxsam = 10, seed = 1)
+  object <- evaluate(object, maxsam = 10, seed = 1)
 
   # Summarize
   expect_no_error(a <- capture.output(summary(object)))

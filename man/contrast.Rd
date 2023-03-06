@@ -2,35 +2,20 @@
 % Please edit documentation in R/contrast.R
 \name{contrast}
 \alias{contrast}
-\alias{contrast,PersephoneModelList-method}
+\alias{contrast,ProgressModelList-method}
 \title{contrast models}
 \usage{
 contrast(object, ...)
 
-\S4method{contrast}{PersephoneModelList}(
-  object,
-  by = "AICc",
-  save = TRUE,
-  name = "model_contrast",
-  path = getwd(),
-  ...
-)
+\S4method{contrast}{ProgressModelList}(object, ...)
 }
 \arguments{
 \item{object}{an object of class \code{PersephoneModelList}.}
 
 \item{...}{extra arguments.}
-
-\item{by}{character. Currently, only "AICc" is accepted.}
-
-\item{save}{logical. Should the result be saved?}
-
-\item{name}{character. The file name.}
-
-\item{path}{character. The path to store the file.}
 }
 \value{
-If \code{by = "aicc"}, a list of objects of class \code{aictab}.
+A \code{data.frame()} with one row for each model.
 }
 \description{
 Contrast models inside a \code{PersephoneModelList} object based on a
@@ -44,29 +29,39 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneBin",
+object2 <- new("ProgressCLM",
                region = region,
-               crop = "Corn",
-               data = progress_ne$Corn,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               crop = "Soybeans",
+               data = progress_ne$Soybeans,
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Fit
 object <- fit(object)
 
-# Contrast
-contrast(object)
+# Plot
+plot(object, cumulative = TRUE, seasons = 2002)
+
+# Predict
+predict(object, progress_ne)
+
+# Evaluate
+object <- crossval(object, maxsam = 100, seed = 1)
+plot_metrics(object)
+
+# Summarize
+summary(object)
+
+# Report
+report(object, name = "example_report", dir = getwd())
 }
-}
-\seealso{
-\code{\link[AICcmodavg:aictab]{AICcmodavg::aictab()}}
 }

@@ -2,27 +2,27 @@
 % Please edit documentation in R/update.R
 \name{update}
 \alias{update}
-\alias{update,PersephoneModel-method}
-\alias{update,PersephoneModelList-method}
+\alias{update,ProgressModel-method}
+\alias{update,ProgressModelList-method}
 \title{Update Model}
 \usage{
 update(object, ...)
 
-\S4method{update}{PersephoneModel}(object, ...)
+\S4method{update}{ProgressModel}(object, ...)
 
-\S4method{update}{PersephoneModelList}(object, ...)
+\S4method{update}{ProgressModelList}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
+\item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.
 whose slots are to be updated.}
 
 \item{...}{extra arguments.}
 }
 \value{
-an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
+an object of class \code{ProgressModel} or \code{ProgressModelList}.
 }
 \description{
-Update one or more slots of a PersephoneModel object.
+Update one or more slots of a \code{ProgressModel} object.
 }
 \examples{
 \dontrun{
@@ -31,7 +31,7 @@ library(cronus)
 region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
-object <- new("PersephoneCumLink", region = region, crop = "Corn", model = "A")
+object <- new("ProgressCLM", region = region, crop = "Corn", model = "A")
 object <- update(object, region = region, crop = "Soybeans", model = "B")
 }
 }

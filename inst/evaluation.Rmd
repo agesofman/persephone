@@ -3,5 +3,5 @@
 The following graphs show the RMSPE with respect to time and phenological stage. In order to obtain a metric that summarizes model performance into a single value, the RMSPE can be summed over stages and then averaged over time.
 
 ```{r metrics, fig.height=3.5}
-plot_metrics(object)
+plot_rmspe(object)
 ```

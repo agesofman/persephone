@@ -2,37 +2,27 @@
 % Please edit documentation in R/plot.R
 \name{plot}
 \alias{plot}
-\alias{plot,PersephoneModel,ANY-method}
-\alias{plot,PersephoneModelList,ANY-method}
+\alias{plot,ProgressModel,ANY-method}
+\alias{plot,ProgressModelList,ANY-method}
 \title{Plot}
 \usage{
 plot(x, y, ...)
 
-\S4method{plot}{PersephoneModel,ANY}(
+\S4method{plot}{ProgressModel,ANY}(
   x,
   seasons = 2002,
   cumulative = TRUE,
   save = FALSE,
-  dir = getwd(),
+  path = cronus::get_path_hermes(),
   file = "plot.pdf",
   width = 15,
   height = 8
 )
 
-\S4method{plot}{PersephoneModelList,ANY}(
-  x,
-  ncol = NULL,
-  nrow = NULL,
-  save = FALSE,
-  dir = getwd(),
-  file = "plot.pdf",
-  width = 15,
-  height = 8,
-  ...
-)
+\S4method{plot}{ProgressModelList,ANY}(x, y, ...)
 }
 \arguments{
-\item{x}{an S4 object. The model of interest.}
+\item{x}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{y}{not used.}
 
@@ -44,21 +34,17 @@ plot(x, y, ...)
 
 \item{save}{logical. Should the plot be saved?}
 
-\item{dir}{character. The directory in which the plot will be saved.}
+\item{path}{character. The directory in which the plot will be saved.}
 
 \item{file}{character. The file name.}
 
 \item{width}{numeric. The width of the plot in inches.}
 
 \item{height}{numeric. The height of the plot in inches.}
-
-\item{ncol}{numeric. Number of rows in the plot layout.}
-
-\item{nrow}{numeric. Number of columns in the plot layout.}
 }
 \value{
-A plot, created with \code{ggplot2} and \code{ggpubr}. The plot is
-returned wrapped inside \code{invisible()}.
+A plot, created with \code{ggplot2} The plot is returned wrapped inside
+\code{invisible()}.
 }
 \description{
 Plot
@@ -71,21 +57,21 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
-               data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               data = data_progress$Corn,
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneCumLink",
+object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
-               data = progress_ne$Soybeans,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               data = data_progress$Soybeans,
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Fit
 object <- fit(object)
@@ -94,16 +80,16 @@ object <- fit(object)
 plot(object, cumulative = TRUE, seasons = 2002)
 
 # Predict
-predict(object, progress_ne)
+predict(object, data_progress)
 
 # Evaluate
 object <- crossval(object, maxsam = 100, seed = 1)
-plot_metrics(object)
+plot_rmspe(object)
 
 # Summarize
 summary(object)
 
 # Report
-report(object, name = "example_report", dir = getwd())
+report(object, name = "example_report")
 }
 }

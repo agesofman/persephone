@@ -1,4 +1,4 @@
-test_that("class definition works", {
+test_that("evaluate works", {
 
   # Create a Region object
   library(cronus)
@@ -12,8 +12,6 @@ test_that("class definition works", {
                  data = data_progress$Corn,
                  formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
-  expect_s4_class(object1, "ProgressBM")
-
   # Create another model
   object2 <- new("ProgressCLM",
                  region = region,
@@ -21,6 +19,15 @@ test_that("class definition works", {
                  data = data_progress$Soybeans,
                  formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
-  expect_s4_class(object2, "ProgressCLM")
+  # Concatenate the models
+  object <- c(object1, object2) # ProgressModelList
+
+  # Evaluate
+  expect_no_error(object <- evaluate(object, maxsam = 10, seed = 1))
+
+  # Check classes
+  expect_s3_class(object, "ProgressModelList")
+  expect_s4_class(object[[1]], "ProgressBM")
+  expect_s4_class(object[[2]], "ProgressCLM")
 
 })

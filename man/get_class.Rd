@@ -2,87 +2,96 @@
 % Please edit documentation in R/get.R
 \name{get_class}
 \alias{get_class}
-\alias{get_class,PersephoneModel-method}
-\alias{get_class,PersephoneModelList-method}
+\alias{get_class,ProgressModel-method}
+\alias{get_class,ProgressModelList-method}
 \alias{get_region}
-\alias{get_region,PersephoneModel-method}
-\alias{get_region,PersephoneModelList-method}
+\alias{get_region,ProgressModel-method}
+\alias{get_region,ProgressModelList-method}
 \alias{get_label}
-\alias{get_label,PersephoneModel-method}
-\alias{get_label,PersephoneModelList-method}
+\alias{get_label,ProgressModel-method}
+\alias{get_label,ProgressModelList-method}
 \alias{get_formula}
-\alias{get_formula,PersephoneModel-method}
-\alias{get_formula,PersephoneModelList-method}
+\alias{get_formula,ProgressModel-method}
+\alias{get_formula,ProgressModelList-method}
 \alias{get_model}
-\alias{get_model,PersephoneModel-method}
-\alias{get_model,PersephoneModelList-method}
+\alias{get_model,ProgressModel-method}
+\alias{get_model,ProgressModelList-method}
 \alias{get_crops}
-\alias{get_crops,PersephoneModel-method}
-\alias{get_crops,PersephoneModelList-method}
+\alias{get_crops,ProgressModel-method}
+\alias{get_crops,ProgressModelList-method}
 \alias{get_index}
-\alias{get_index,PersephoneModelList-method}
+\alias{get_index,ProgressModelList-method}
 \alias{get_stages}
-\alias{get_stages,PersephoneModel-method}
-\alias{get_stages,PersephoneModelList-method}
+\alias{get_stages,ProgressModel-method}
+\alias{get_stages,ProgressModelList-method}
 \alias{get_seasons}
-\alias{get_seasons,PersephoneModel-method}
-\alias{get_seasons,PersephoneModelList-method}
+\alias{get_seasons,ProgressModel-method}
+\alias{get_seasons,ProgressModelList-method}
+\alias{get_link}
+\alias{get_link,ProgressModel-method}
+\alias{get_link,ProgressModelList-method}
 \title{Get object slots}
 \usage{
 get_class(object, ...)
 
-\S4method{get_class}{PersephoneModel}(object, ...)
+\S4method{get_class}{ProgressModel}(object, ...)
 
-\S4method{get_class}{PersephoneModelList}(object, ...)
+\S4method{get_class}{ProgressModelList}(object, ...)
 
 get_region(object, ...)
 
-\S4method{get_region}{PersephoneModel}(object, ...)
+\S4method{get_region}{ProgressModel}(object, ...)
 
-\S4method{get_region}{PersephoneModelList}(object, ...)
+\S4method{get_region}{ProgressModelList}(object, ...)
 
 get_label(object, ...)
 
-\S4method{get_label}{PersephoneModel}(object, ...)
+\S4method{get_label}{ProgressModel}(object, ...)
 
-\S4method{get_label}{PersephoneModelList}(object, ...)
+\S4method{get_label}{ProgressModelList}(object, ...)
 
 get_formula(object, ...)
 
-\S4method{get_formula}{PersephoneModel}(object, ...)
+\S4method{get_formula}{ProgressModel}(object, ...)
 
-\S4method{get_formula}{PersephoneModelList}(object, ...)
+\S4method{get_formula}{ProgressModelList}(object, ...)
 
 get_model(object, ...)
 
-\S4method{get_model}{PersephoneModel}(object, ...)
+\S4method{get_model}{ProgressModel}(object, ...)
 
-\S4method{get_model}{PersephoneModelList}(object, ...)
+\S4method{get_model}{ProgressModelList}(object, ...)
 
 get_crops(object, ...)
 
-\S4method{get_crops}{PersephoneModel}(object)
+\S4method{get_crops}{ProgressModel}(object)
 
-\S4method{get_crops}{PersephoneModelList}(object)
+\S4method{get_crops}{ProgressModelList}(object)
 
 get_index(object, ...)
 
-\S4method{get_index}{PersephoneModelList}(object, crop = NULL)
+\S4method{get_index}{ProgressModelList}(object, crop = NULL)
 
 get_stages(object, ...)
 
-\S4method{get_stages}{PersephoneModel}(object)
+\S4method{get_stages}{ProgressModel}(object)
 
-\S4method{get_stages}{PersephoneModelList}(object)
+\S4method{get_stages}{ProgressModelList}(object)
 
 get_seasons(object, ...)
 
-\S4method{get_seasons}{PersephoneModel}(object)
+\S4method{get_seasons}{ProgressModel}(object)
 
-\S4method{get_seasons}{PersephoneModelList}(object)
+\S4method{get_seasons}{ProgressModelList}(object)
+
+get_link(object, ...)
+
+\S4method{get_link}{ProgressModel}(object)
+
+\S4method{get_link}{ProgressModelList}(object)
 }
 \arguments{
-\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
+\item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{...}{extra arguments}
 
@@ -113,6 +122,8 @@ Get object slots
 
 \item \code{get_seasons()}: returns a numeric. The \code{seasons} included in \code{data}.
 
+\item \code{get_link()}: returns a character The \code{link} slot of the \code{object}.
+
 }}
 \examples{
 \dontrun{
@@ -122,13 +133,13 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object <- new("PersephoneBin",
+object <- new("ProgressBM",
               label = "Base_logit",
               region = region,
               crop = "Corn",
               data = progress_ne$Corn,
               link = "logit",
-              formula = "CumPercentage ~ Time + agdd + adayl") # PersephoneModel
+              formula = "CumPercentage ~ Time + agdd + adayl") # ProgressModel
 
 # Fit
 object <- fit(object)

@@ -5,7 +5,7 @@
 
 #' Get object slots
 #'
-#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param object an object of class `ProgressModel` or `ProgressModelList`.
 #' @param crop character. A crop of choice.
 #' @param ... extra arguments
 #'
@@ -20,13 +20,13 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object <- new("PersephoneBin",
+#' object <- new("ProgressBM",
 #'               label = "Base_logit",
 #'               region = region,
 #'               crop = "Corn",
 #'               data = progress_ne$Corn,
 #'               link = "logit",
-#'               formula = "CumPercentage ~ Time + agdd + adayl") # PersephoneModel
+#'               formula = "CumPercentage ~ Time + agdd + adayl") # ProgressModel
 #'
 #' # Fit
 #' object <- fit(object)
@@ -47,7 +47,7 @@ setGeneric("get_class", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_class",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Update object
@@ -60,7 +60,7 @@ setMethod("get_class",
 
 #' @rdname get_class
 setMethod("get_class",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
@@ -78,7 +78,7 @@ setGeneric("get_region", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_region",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Update object
@@ -91,7 +91,7 @@ setMethod("get_region",
 
 #' @rdname get_class
 setMethod("get_region",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
@@ -109,7 +109,7 @@ setGeneric("get_label", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_label",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Update object
@@ -122,7 +122,7 @@ setMethod("get_label",
 
 #' @rdname get_class
 setMethod("get_label",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
@@ -140,7 +140,7 @@ setGeneric("get_formula", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_formula",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Update object
@@ -153,14 +153,14 @@ setMethod("get_formula",
 
 #' @rdname get_class
 setMethod("get_formula",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
   update(object, ...)
 
   # Get models
-  lapply(object, get_formula)
+  sapply(object, get_formula, USE.NAMES = FALSE)
 
 })
 
@@ -171,7 +171,7 @@ setGeneric("get_model", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_model",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Update object
@@ -187,7 +187,7 @@ setMethod("get_model",
 
 #' @rdname get_class
 setMethod("get_model",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
@@ -207,7 +207,7 @@ setGeneric("get_crops", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_crops",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object) {
 
   object@crop
@@ -216,10 +216,10 @@ setMethod("get_crops",
 
 #' @rdname get_class
 setMethod("get_crops",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object) {
 
-  sapply(object, "get_crops")
+  sapply(object, get_crops)
 
 })
 
@@ -231,7 +231,7 @@ setGeneric("get_index", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_index",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, crop = NULL) {
 
   which(crop == get_crops(object))
@@ -245,7 +245,7 @@ setGeneric("get_stages", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_stages",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object) {
 
   unique(object@data$Stage)
@@ -254,7 +254,7 @@ setMethod("get_stages",
 
 #' @rdname get_class
 setMethod("get_stages",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object) {
 
   x <- lapply(object, get_stages)
@@ -270,7 +270,7 @@ setGeneric("get_seasons", signature = c("object"),
 
 #' @rdname get_class
 setMethod("get_seasons",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object) {
 
   unique(object@data$Season)
@@ -279,11 +279,34 @@ setMethod("get_seasons",
 
 #' @rdname get_class
 setMethod("get_seasons",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object) {
 
   x <- lapply(object, get_seasons)
   names(x) <- get_crops(object)
   x
+
+})
+
+#' @describeIn get_class returns a character The `link` slot of the `object`.
+#' @export
+setGeneric("get_link", signature = c("object"),
+           function(object, ...) { standardGeneric("get_link") })
+
+#' @rdname get_class
+setMethod("get_link",
+          signature = c(object = "ProgressModel"),
+          definition = function(object) {
+
+  object@link
+
+})
+
+#' @rdname get_class
+setMethod("get_link",
+          signature = c(object = "ProgressModelList"),
+          definition = function(object) {
+
+  sapply(object, get_link)
 
 })

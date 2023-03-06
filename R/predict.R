@@ -3,111 +3,38 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' @title `persephone` model prediction
+#' @title Progress model prediction
 #'
 #' @description
 #' Calculate the predicted values of a model. The `object`, provided needs to
 #' have already passed from `fit`, in order to include a `model` slot.
 #'
-#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param object an object of class `ProgressModel` or `ProgressModelList`.
 #' @param pdata data.frame. The data used in model prediction.
 #' @param ... extra arguments.
 #'
 #' @return data.frame.
 #'
 #' @import dplyr
-#' @importFrom cronus calc_percentage
+#' @importFrom cronus calc_perc calc_cumperc
 #' @export
 #'
-#' @examples
-#' \dontrun{
-#' # Create a Region object
-#' library(cronus)
-#' region <- Region(name = "nebraska", type = "us state",
-#'                  div = c(country = "United States", state = "Nebraska"))
-#'
-#' # Create a model
-#' object1 <- new("PersephoneBin",
-#'                region = region,
-#'                crop = "Corn",
-#'                data = progress_ne$Corn,
-#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
-#'
-#' # Create another model
-#' object2 <- new("PersephoneCumLink",
-#'                region = region,
-#'                crop = "Soybeans",
-#'                data = progress_ne$Soybeans,
-#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
-#'
-#' # Concatenate the models
-#' object <- c(object1, object2) # PersephoneModelList
-#'
-#' # Fit
-#' object <- fit(object)
-#'
-#' # Plot
-#' plot(object, cumulative = TRUE, seasons = 2002)
-#'
-#' # Predict
-#' predict(object, progress_ne)
-#'
-#' # Evaluate
-#' object <- crossval(object, maxsam = 100, seed = 1)
-#' plot_metrics(object)
-#'
-#' # Summarize
-#' summary(object)
-#'
-#' # Report
-#' report(object, name = "example_report", dir = getwd())
-#' }
+#' @inherit fit examples
 setGeneric("predict")
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, pdata) {
 
   # Model Prediction
-  mapply(predict, object, pdata, SIMPLIFY = FALSE)
+  ProgressList(mapply(predict, object, pdata, SIMPLIFY = FALSE))
 
 })
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneBin"),
-          definition = function(object, pdata) {
-
-  # Initialize
-  newdata <- data.frame()
-
-  # Model Prediction
-  pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
-  pdata <- dplyr::distinct(pdata)
-  stages <- get_stages(object)
-  n <- nrow(pdata)
-
-  # for i = 1
-  pdata$Stage <- rep(stages[1], times = n)
-  pdata$CumPercentage <- rep(1, times = n)
-  newdata <- rbind(newdata, pdata)
-
-  for (stage in stages[-1]){
-    pdata$Stage <- rep(stage, times = n)
-    pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")
-    newdata <- rbind(newdata, pdata)
-  }
-  newdata <- cronus::calc_percentage(newdata, cum = FALSE)
-
-  # Return the predicted data
-  newdata
-
-})
-
-#' @rdname predict
-setMethod("predict",
-          signature = c(object = "PersephoneMixedBin"),
+          signature = c(object = "ProgressBM"),
           definition = function(object, pdata) {
 
   # Initialize
@@ -129,7 +56,8 @@ setMethod("predict",
     pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")
     newdata <- rbind(newdata, pdata)
   }
-  newdata <- cronus::calc_percentage(newdata, cum = FALSE)
+  newdata <- Progress(newdata)
+  newdata <- cronus::calc_perc(newdata)
 
   # Return the predicted data
   newdata
@@ -138,12 +66,44 @@ setMethod("predict",
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneCumLink"),
+          signature = c(object = "ProgressBMM"),
+          definition = function(object, pdata) {
+
+  # Initialize
+  newdata <- data.frame()
+
+  # Model Prediction
+  pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
+  pdata <- dplyr::distinct(pdata)
+  stages <- get_stages(object)
+  n <- nrow(pdata)
+
+  # for i = 1
+  pdata$Stage <- rep(stages[1], times = n)
+  pdata$CumPercentage <- rep(1, times = n)
+  newdata <- rbind(newdata, pdata)
+
+  for (stage in stages[-1]){
+    pdata$Stage <- rep(stage, times = n)
+    pdata$CumPercentage <- predict(object@model[[stage]], pdata, type = "response")
+    newdata <- rbind(newdata, pdata)
+  }
+  newdata <- Progress(newdata)
+  newdata <- cronus::calc_perc(newdata)
+
+  # Return the predicted data
+  newdata
+
+})
+
+#' @rdname predict
+setMethod("predict",
+          signature = c(object = "ProgressCLM"),
           definition = function(object, pdata) {
 
   # Model Prediction
   pdata$Percentage <- predict(object@model, pdata, type = "prob")$fit
-  pdata <- cronus::calc_percentage(pdata, cum = TRUE)
+  pdata <- cronus::calc_cumperc(pdata)
 
   # Return the predicted data
   pdata
@@ -152,14 +112,49 @@ setMethod("predict",
 
 #' @rdname predict
 setMethod("predict",
-          signature = c(object = "PersephoneMixedCumLink"),
+          signature = c(object = "ProgressCLMM"),
           definition = function(object, pdata) {
 
   # Model Prediction
   pdata$Percentage <- predict(object@model, pdata, type = "prob")
-  pdata <- cronus::calc_percentage(pdata, cum = TRUE)
+  pdata <- Progress(pdata)
+  pdata <- cronus::calc_cumperc(pdata)
 
   # Return the predicted data
   pdata
+
+})
+
+#' @rdname predict
+setMethod("predict",
+          signature = c(object = "ProgressSRF"),
+          definition = function(object, pdata) {
+
+  # Initialize
+  newdata <- data.frame()
+
+  # Model Prediction
+  pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
+  pdata <- dplyr::distinct(pdata)
+  stages <- get_stages(object)
+  n <- nrow(pdata)
+
+  # for i = 1
+  pdata$Stage <- rep(stages[1], times = n)
+  pdata$Percentage <- rep(1, times = n)
+  newdata <- rbind(newdata, pdata)
+
+  if (object@scaled){
+    for (stage in stages[-1]){
+      pdata$Stage <- rep(stage, times = n)
+      pdata$Percentage <- randomForestSRC::predict.rfsrc(object@model[[stage]], pdata)$predicted
+      newdata <- rbind(newdata, pdata)
+    }
+  }
+  newdata <- Progress(newdata)
+  newdata <- cronus::calc_perc(newdata)
+
+  # Return the predicted data
+  newdata
 
 })

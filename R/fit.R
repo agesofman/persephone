@@ -3,17 +3,18 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' @title Persephone model fitting
+#' @title Progress model fitting
 #'
 #' @description
 #' Fit the model of interest. The model is fitted on the `model` and `data`
 #' already inside the `object`, unless extra arguments are provided, in which
 #' case the model is first updated and then fitted.
 #'
-#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param object an object of class `ProgressModel` or `ProgressModelList`.
 #' @param ... extra arguments passed to `update()`.
 #'
-#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @return An object identical to `object`, with the `model` and `fitted`
+#' slot(s) altered.
 #'
 #' @import dplyr
 #' @importFrom lme4 glmer glmerControl
@@ -28,21 +29,21 @@
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
 #' # Create a model
-#' object1 <- new("PersephoneBin",
+#' object1 <- new("ProgressBM",
 #'                region = region,
 #'                crop = "Corn",
 #'                data = progress_ne$Corn,
-#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+#'                formula = "CumPercentage ~ Time + agdd") # ProgressModel
 #'
 #' # Create another model
-#' object2 <- new("PersephoneCumLink",
+#' object2 <- new("ProgressCLM",
 #'                region = region,
 #'                crop = "Soybeans",
 #'                data = progress_ne$Soybeans,
-#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+#'                formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 #'
 #' # Concatenate the models
-#' object <- c(object1, object2) # PersephoneModelList
+#' object <- c(object1, object2) # ProgressModelList
 #'
 #' # Fit
 #' object <- fit(object)
@@ -68,7 +69,7 @@ setGeneric("fit", signature = c("object"),
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Update object
@@ -76,14 +77,14 @@ setMethod("fit",
 
   # Model Fitting
   object <- lapply(object, fit)
-  class(object) <- "PersephoneModelList"
+  class(object) <- "ProgressModelList"
   object
 
 })
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneBin"),
+          signature = c(object = "ProgressBM"),
           definition = function(object, ...) {
 
   # Update object
@@ -109,7 +110,7 @@ setMethod("fit",
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneMixedBin"),
+          signature = c(object = "ProgressBMM"),
           definition = function(object, ...) {
 
   # Update object
@@ -136,7 +137,7 @@ setMethod("fit",
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneCumLink"),
+          signature = c(object = "ProgressCLM"),
           definition = function(object, ...) {
 
   # Update object
@@ -160,7 +161,7 @@ setMethod("fit",
 
 #' @rdname fit
 setMethod("fit",
-          signature = c(object = "PersephoneMixedCumLink"),
+          signature = c(object = "ProgressCLMM"),
           definition = function(object, ...) {
 
   # Update object
@@ -193,6 +194,33 @@ setMethod("fit",
                    Hess      = TRUE,
                    nAGQ      = .(object@nAGQ),
                    control   = ordinal::clmm2.control(method = "ucminf"))))
+
+  # Return the object
+  object@fitted <- predict(object, object@data)
+  object
+
+})
+
+#' @rdname fit
+setMethod("fit",
+          signature = c(object = "ProgressSRF"),
+          definition = function(object, ...) {
+
+  # Update object
+  update(object, ...)
+
+  # Model Fitting
+  for (stage in get_stages(object)[-1]){
+    data_stage <- dplyr::filter(object@data, .data$Stage == stage)
+    object@model[[stage]] <- randomForestSRC::rfsrc(formula = formula(object@formula),
+                                                    data = data_stage,
+                                                    ntree = object@ntree,
+                                                    mtry = object@mtry,
+                                                    nodesize = object@nodesize,
+                                                    membership = !(object@scaled),
+                                                    samptype = object@samptype)
+
+  }
 
   # Return the object
   object@fitted <- predict(object, object@data)

@@ -2,33 +2,48 @@
 % Please edit documentation in R/crossval.R
 \name{crossval}
 \alias{crossval}
-\alias{crossval,PersephoneModel-method}
-\alias{crossval,PersephoneModelList-method}
-\title{Cross - Validation}
+\alias{crossval,ProgressModel-method}
+\alias{crossval,ProgressModelList-method}
+\title{Cross-Validation}
 \usage{
 crossval(object, ...)
 
-\S4method{crossval}{PersephoneModel}(object, test = 0.25, maxsam = 500, seed = 1)
+\S4method{crossval}{ProgressModel}(
+  object,
+  fun = rmspe,
+  test = 0.25,
+  maxsam = 500,
+  seed = 1,
+  simplify = TRUE,
+  .id = NULL
+)
 
-\S4method{crossval}{PersephoneModelList}(object, ...)
+\S4method{crossval}{ProgressModelList}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
+\item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{...}{extra arguments.}
+
+\item{fun}{function. The function to apply on the train-test split.}
 
 \item{test}{numeric. The proportion of seasons to be used for testing}
 
 \item{maxsam}{numeric. The maximum number of Monte - Carlo samples to use.}
 
 \item{seed}{numeric. The seed to be used in Monte - Carlo sampling.}
+
+\item{simplify}{logical. Should the resulting list be simplified into a
+data.frame?}
+
+\item{.id}{The data.frame identifier (see \code{dplyr::bind_rows}). Only used if
+\code{simplify = TRUE}.}
 }
 \value{
 A list containing the calculated metrics.
 }
 \description{
-Calculate the model performance metrics using leave-group-out (or Monte
-Carlo) cross-validation.
+Apply leave-group-out (or Monte Carlo) cross-validation.
 }
 \examples{
 \dontrun{
@@ -38,21 +53,21 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneCumLink",
+object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
                data = progress_ne$Soybeans,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Fit
 object <- fit(object)

@@ -6,13 +6,13 @@
 #' @title Update Model
 #'
 #' @description
-#' Update one or more slots of a PersephoneModel object.
+#' Update one or more slots of a `ProgressModel` object.
 #'
-#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param object an object of class `ProgressModel` or `ProgressModelList`.
 #' whose slots are to be updated.
 #' @param ... extra arguments.
 #'
-#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @return an object of class `ProgressModel` or `ProgressModelList`.
 #' @export
 #'
 #' @examples
@@ -22,14 +22,14 @@
 #' region <- Region(name = "nebraska", type = "us state",
 #'                  div = c(country = "United States", state = "Nebraska"))
 #'
-#' object <- new("PersephoneCumLink", region = region, crop = "Corn", model = "A")
+#' object <- new("ProgressCLM", region = region, crop = "Corn", model = "A")
 #' object <- update(object, region = region, crop = "Soybeans", model = "B")
 #' }
 setGeneric("update")
 
 #' @rdname update
 setMethod("update",
-          signature = c(object = "PersephoneModel"),
+          signature = c(object = "ProgressModel"),
           definition = function(object, ...) {
 
   # Get the object slots to update
@@ -51,7 +51,7 @@ setMethod("update",
 
 #' @rdname update
 setMethod("update",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
   # Get the object slots to update

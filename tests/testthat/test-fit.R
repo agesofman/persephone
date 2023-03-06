@@ -6,21 +6,21 @@ test_that("fitting works", {
                    div = c(country = "United States", state = "Nebraska"))
 
   # Create a model
-  object1 <- new("PersephoneBin",
+  object1 <- new("ProgressBM",
                  region = region,
                  crop = "Corn",
-                 data = progress_ne$Corn,
-                 formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+                 data = data_progress$Corn,
+                 formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
   # Create another model
-  object2 <- new("PersephoneCumLink",
+  object2 <- new("ProgressCLM",
                  region = region,
                  crop = "Soybeans",
-                 data = progress_ne$Soybeans,
-                 formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+                 data = data_progress$Soybeans,
+                 formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
   # Concatenate the models
-  object <- c(object1, object2) # PersephoneModelList
+  object <- c(object1, object2) # ProgressModelList
 
   # Fit
   expect_no_error(object <- fit(object))
@@ -28,8 +28,8 @@ test_that("fitting works", {
   expect_false(is.null(object[[2]]@model))
 
   # Check classes
-  expect_s3_class(object, "PersephoneModelList")
-  expect_s4_class(object[[1]], "PersephoneBin")
-  expect_s4_class(object[[2]], "PersephoneCumLink")
+  expect_s3_class(object, "ProgressModelList")
+  expect_s4_class(object[[1]], "ProgressBM")
+  expect_s4_class(object[[2]], "ProgressCLM")
 
 })

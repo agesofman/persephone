@@ -3,67 +3,25 @@
 # Created by: Ioannis Oikonomidis
 #-------------------------------------------------------------------------------
 
-#' @title Persephone model summary
+#' @title Progress model summary
 #'
 #' @description
 #' Print a model summary.
 #'
-#' @param object an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @param object an object of class `ProgressModel` or `ProgressModelList`.
 #' @param ... extra arguments.
 #'
-#' @return an object of class `PersephoneModel` or `PersephoneModelList`.
+#' @return an object of class `ProgressModel` or `ProgressModelList`.
 #'
 #' @importFrom ordinal nominal_test scale_test
 #' @export
 #'
-#' @examples
-#' \dontrun{
-#' # Create a Region object
-#' library(cronus)
-#' region <- Region(name = "nebraska", type = "us state",
-#'                  div = c(country = "United States", state = "Nebraska"))
-#'
-#' # Create a model
-#' object1 <- new("PersephoneBin",
-#'                region = region,
-#'                crop = "Corn",
-#'                data = progress_ne$Corn,
-#'                formula = "CumPercentage ~ Time + agdd") # PersephoneModel
-#'
-#' # Create another model
-#' object2 <- new("PersephoneCumLink",
-#'                region = region,
-#'                crop = "Soybeans",
-#'                data = progress_ne$Soybeans,
-#'                formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
-#'
-#' # Concatenate the models
-#' object <- c(object1, object2) # PersephoneModelList
-#'
-#' # Fit
-#' object <- fit(object)
-#'
-#' # Plot
-#' plot(object, cumulative = TRUE, seasons = 2002)
-#'
-#' # Predict
-#' predict(object, progress_ne)
-#'
-#' # Evaluate
-#' object <- crossval(object, maxsam = 100, seed = 1)
-#' plot_metrics(object)
-#'
-#' # Summarize
-#' summary(object)
-#'
-#' # Report
-#' report(object, name = "example_report", dir = getwd())
-#' }
+#' @inherit fit examples
 setGeneric("summary")
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneModelList"),
+          signature = c(object = "ProgressModelList"),
           definition = function(object, ...) {
 
             # Model summary
@@ -73,7 +31,7 @@ setMethod("summary",
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneBin"),
+          signature = c(object = "ProgressBM"),
           definition = function(object, ...) {
 
   dash_simple <- paste0(rep("-", 50))
@@ -98,7 +56,7 @@ setMethod("summary",
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneMixedBin"),
+          signature = c(object = "ProgressBMM"),
           definition = function(object, ...) {
 
   dash_simple <- paste0(rep("-", 50))
@@ -123,7 +81,7 @@ setMethod("summary",
 
 #' @rdname summary
 setMethod("summary",
-          signature = c(object = "PersephoneCumLink"),
+          signature = c(object = "ProgressCLM"),
           definition = function(object, ...) {
 
   dash_simple <- paste0(rep("-", 50))

@@ -2,29 +2,29 @@
 % Please edit documentation in R/summary.R
 \name{summary}
 \alias{summary}
-\alias{summary,PersephoneModelList-method}
-\alias{summary,PersephoneBin-method}
-\alias{summary,PersephoneMixedBin-method}
-\alias{summary,PersephoneCumLink-method}
-\title{Persephone model summary}
+\alias{summary,ProgressModelList-method}
+\alias{summary,ProgressBM-method}
+\alias{summary,ProgressBMM-method}
+\alias{summary,ProgressCLM-method}
+\title{Progress model summary}
 \usage{
 summary(object, ...)
 
-\S4method{summary}{PersephoneModelList}(object, ...)
+\S4method{summary}{ProgressModelList}(object, ...)
 
-\S4method{summary}{PersephoneBin}(object, ...)
+\S4method{summary}{ProgressBM}(object, ...)
 
-\S4method{summary}{PersephoneMixedBin}(object, ...)
+\S4method{summary}{ProgressBMM}(object, ...)
 
-\S4method{summary}{PersephoneCumLink}(object, ...)
+\S4method{summary}{ProgressCLM}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
+\item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{...}{extra arguments.}
 }
 \value{
-an object of class \code{PersephoneModel} or \code{PersephoneModelList}.
+an object of class \code{ProgressModel} or \code{ProgressModelList}.
 }
 \description{
 Print a model summary.
@@ -37,21 +37,21 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneCumLink",
+object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
                data = progress_ne$Soybeans,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Fit
 object <- fit(object)

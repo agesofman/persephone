@@ -1,3 +1,14 @@
+# persephone 0.2.0
+
+* Changed `Persephone*` classes to `Progress*` classes.
+* Changed `data` and `fitted` slot classes to `Progress`.
+* Added `evaluate()` function.
+* Changed `contrast()` function.
+* Added `plot_contrast()` function.
+* Renamed `calc_percentage()` due to changes in package `cronus`.
+* Function `get_combinations()` was moved from `persephone` to `cronus` and renamed to `combinations()`.
+* Added `ProgressSRF` class.
+
 # persephone 0.1.2
 
 * Changed github actions.

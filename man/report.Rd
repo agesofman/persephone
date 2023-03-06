@@ -2,32 +2,25 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\alias{report,PersephoneModel-method}
-\alias{report,PersephoneModelList-method}
+\alias{report,ProgressModel-method}
+\alias{report,ProgressModelList-method}
 \title{Create reports}
 \usage{
 report(object, ...)
 
-\S4method{report}{PersephoneModel}(
+\S4method{report}{ProgressModel}(
   object,
   name = NULL,
-  path = getwd(),
+  path = cronus::get_path_hermes(),
   test = 0.25,
   maxsam = 500,
   seed = 1
 )
 
-\S4method{report}{PersephoneModelList}(
-  object,
-  name = NULL,
-  path = getwd(),
-  test = 0.25,
-  maxsam = 500,
-  seed = 1
-)
+\S4method{report}{ProgressModelList}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
+\item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{...}{extra arguments.}
 
@@ -35,11 +28,11 @@ report(object, ...)
 
 \item{path}{character. The path to store the html report.}
 
-\item{test}{Passed to \code{persephone::crossval()}.}
+\item{test}{Passed to \code{persephone::evaluate()}.}
 
-\item{maxsam}{Passed to \code{persephone::crossval()}.}
+\item{maxsam}{Passed to \code{persephone::evaluate()}.}
 
-\item{seed}{Passed to \code{persephone::crossval()}.}
+\item{seed}{Passed to \code{persephone::evaluate()}.}
 }
 \value{
 nothing. The html report(s) is (are) created and stored.
@@ -56,21 +49,21 @@ region <- Region(name = "nebraska", type = "us state",
                  div = c(country = "United States", state = "Nebraska"))
 
 # Create a model
-object1 <- new("PersephoneBin",
+object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
                data = progress_ne$Corn,
-               formula = "CumPercentage ~ Time + agdd") # PersephoneModel
+               formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
-object2 <- new("PersephoneCumLink",
+object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
                data = progress_ne$Soybeans,
-               formula = "Stage ~ Time + agdd + adayl") # PersephoneModel
+               formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
-object <- c(object1, object2) # PersephoneModelList
+object <- c(object1, object2) # ProgressModelList
 
 # Fit
 object <- fit(object)
@@ -89,6 +82,6 @@ plot_metrics(object)
 summary(object)
 
 # Report
-report(object, name = "example_report", path = getwd())
+report(object, name = "example_report", dir = getwd())
 }
 }

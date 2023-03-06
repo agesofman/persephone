@@ -9,7 +9,7 @@ carousel(fun, x, ...)
 \arguments{
 \item{fun}{function. A plot function.}
 
-\item{x}{an object of class \code{PersephoneModel} or \code{PersephoneModelList}.}
+\item{x}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
 
 \item{...}{extra arguments.}
 }
