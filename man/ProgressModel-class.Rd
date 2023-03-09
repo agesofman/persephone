@@ -8,6 +8,7 @@
 \alias{ProgressCLM-class}
 \alias{ProgressCLMM-class}
 \alias{ProgressSRF-class}
+\alias{ProgressMRF-class}
 \title{\code{persephone} Model classes}
 \value{
 An S4 object of the appropriate class.

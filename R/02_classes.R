@@ -154,3 +154,24 @@ setClass("ProgressSRF",
                           scaled = TRUE,
                           samptype = "swr",
                           seed = 1))
+
+
+#' @rdname ProgressModel-class
+setClass("ProgressMRF",
+         contains = "ProgressModel",
+         slots = list(formula   = "character",
+                      ntree     = "numeric",
+                      mtry      = "numeric",
+                      splitrule = "character",
+                      nodesize  = "numeric",
+                      scaled    = "logical",
+                      samptype  = "character",
+                      seed      = "numeric"),
+         prototype = list(formula = "",
+                          ntree = 100,
+                          mtry  = 1,
+                          splitrule = "mv.mse",
+                          nodesize = 5,
+                          scaled = TRUE,
+                          samptype = "swr",
+                          seed = 1))

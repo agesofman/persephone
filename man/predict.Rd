@@ -8,6 +8,7 @@
 \alias{predict,ProgressCLM-method}
 \alias{predict,ProgressCLMM-method}
 \alias{predict,ProgressSRF-method}
+\alias{predict,ProgressMRF-method}
 \title{Progress model prediction}
 \usage{
 predict(object, ...)
@@ -23,6 +24,8 @@ predict(object, ...)
 \S4method{predict}{ProgressCLMM}(object, pdata)
 
 \S4method{predict}{ProgressSRF}(object, pdata)
+
+\S4method{predict}{ProgressMRF}(object, pdata)
 }
 \arguments{
 \item{object}{an object of class \code{ProgressModel} or \code{ProgressModelList}.}
@@ -49,14 +52,14 @@ region <- Region(name = "nebraska", type = "us state",
 object1 <- new("ProgressBM",
                region = region,
                crop = "Corn",
-               data = progress_ne$Corn,
+               data = data_progress$Corn,
                formula = "CumPercentage ~ Time + agdd") # ProgressModel
 
 # Create another model
 object2 <- new("ProgressCLM",
                region = region,
                crop = "Soybeans",
-               data = progress_ne$Soybeans,
+               data = data_progress$Soybeans,
                formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 
 # Concatenate the models
@@ -69,16 +72,16 @@ object <- fit(object)
 plot(object, cumulative = TRUE, seasons = 2002)
 
 # Predict
-predict(object, progress_ne)
+predict(object, data_progress)
 
 # Evaluate
-object <- crossval(object, maxsam = 100, seed = 1)
+object <- evaluate(object, maxsam = 100, seed = 1)
 plot_metrics(object)
 
 # Summarize
 summary(object)
 
 # Report
-report(object, name = "example_report", dir = getwd())
+report(object, name = "example_report", path = getwd())
 }
 }

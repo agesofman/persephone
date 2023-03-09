@@ -19,6 +19,8 @@
 #' @import dplyr
 #' @importFrom lme4 glmer glmerControl
 #' @importFrom ordinal clm clm2 clmm2 clmm2.control
+#' @importFrom rsample form_pred
+#' @importFrom tidyr pivot_wider
 #' @export
 #'
 #' @examples
@@ -32,14 +34,14 @@
 #' object1 <- new("ProgressBM",
 #'                region = region,
 #'                crop = "Corn",
-#'                data = progress_ne$Corn,
+#'                data = data_progress$Corn,
 #'                formula = "CumPercentage ~ Time + agdd") # ProgressModel
 #'
 #' # Create another model
 #' object2 <- new("ProgressCLM",
 #'                region = region,
 #'                crop = "Soybeans",
-#'                data = progress_ne$Soybeans,
+#'                data = data_progress$Soybeans,
 #'                formula = "Stage ~ Time + agdd + adayl") # ProgressModel
 #'
 #' # Concatenate the models
@@ -52,17 +54,17 @@
 #' plot(object, cumulative = TRUE, seasons = 2002)
 #'
 #' # Predict
-#' predict(object, progress_ne)
+#' predict(object, data_progress)
 #'
 #' # Evaluate
-#' object <- crossval(object, maxsam = 100, seed = 1)
+#' object <- evaluate(object, maxsam = 100, seed = 1)
 #' plot_metrics(object)
 #'
 #' # Summarize
 #' summary(object)
 #'
 #' # Report
-#' report(object, name = "example_report", dir = getwd())
+#' report(object, name = "example_report", path = getwd())
 #' }
 setGeneric("fit", signature = c("object"),
            function(object, ...) { standardGeneric("fit") })
@@ -212,15 +214,55 @@ setMethod("fit",
   # Model Fitting
   for (stage in get_stages(object)[-1]){
     data_stage <- dplyr::filter(object@data, .data$Stage == stage)
-    object@model[[stage]] <- randomForestSRC::rfsrc(formula = formula(object@formula),
-                                                    data = data_stage,
-                                                    ntree = object@ntree,
-                                                    mtry = object@mtry,
-                                                    nodesize = object@nodesize,
+    object@model[[stage]] <- randomForestSRC::rfsrc(formula    = formula(object@formula),
+                                                    data       = data_stage,
+                                                    ntree      = object@ntree,
+                                                    mtry       = object@mtry,
+                                                    nodesize   = object@nodesize,
                                                     membership = !(object@scaled),
-                                                    samptype = object@samptype)
+                                                    samptype   = object@samptype)
 
   }
+
+  # Return the object
+  object@fitted <- predict(object, object@data)
+  object
+
+})
+
+#' @rdname fit
+setMethod("fit",
+          signature = c(object = "ProgressMRF"),
+          definition = function(object, ...) {
+
+  # Update object
+  update(object, ...)
+
+  # Model Fitting
+  stagenames <- levels(get_stages(object))
+  formula <- randomForestSRC::get.mv.formula(stagenames)
+
+  # Extract covariates
+  covars <- rsample::form_pred(formula(object@formula))
+
+  # Bind global variables
+  Stage <- Percentage <- NULL
+
+  data <- object@data %>%
+    dplyr::select(-c("CumPercentage")) %>%
+    tidyr::pivot_wider(names_from = Stage, values_from = Percentage) %>%
+    dplyr::select(stagenames, covars)
+
+  object@model <- randomForestSRC::rfsrc(formula      = formula,
+                                         data         = data,
+                                         ntree        = object@ntree,
+                                         mtry         = object@mtry,
+                                         nodesize     = object@nodesize,
+                                         splitrule    = object@splitrule,
+                                         samptype     = object@samptype,
+                                         membership   = !(object@scaled),
+                                         seed         = object@seed
+  )
 
   # Return the object
   object@fitted <- predict(object, object@data)

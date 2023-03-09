@@ -82,8 +82,9 @@ setMethod("plot",
 
   # Save the plot
   if (save) {
-    dir_output <- file.path(path, "progress", "plot", "fit",
-                            get_region(x), tolower(get_crops(x)), class(x))
+    dir_output <- file.path(path, "persephone", get_region(x),
+                            "plot", "progress", "fit",
+                            tolower(get_crops(x)), class(x))
     dir.create(dir_output, showWarnings = FALSE, recursive = TRUE)
     pdf(dir_output, width = width, height = height)
   }
@@ -189,8 +190,9 @@ setMethod("plot_rmspe",
 
   # Save the plot
   if (save) {
-    dir_output <- file.path(path, "progress", "plot", "rmspe",
-                            class(object), get_region(object), tolower(get_crops(object)))
+    dir_output <- file.path(path, "persephone", get_region(object),
+                            "plot", "progress", "rmspe",
+                            tolower(get_crops(object)), class(object))
     dir.create(dir_output, showWarnings = FALSE, recursive = TRUE)
     pdf(dir_output, width = width, height = height)
   }
@@ -255,8 +257,9 @@ setMethod("plot_contrast",
 
   # Save the plot
   if (save) {
-    dir_output <- file.path(path, "progress", "plot", "rmspe",
-                            class(y), get_region(y), tolower(get_crops(y)))
+    dir_output <- file.path(path, "persephone", get_region(x),
+                            "plot", "progress", "aicc",
+                            tolower(get_crops(x)), class(x))
     dir.create(dir_output, showWarnings = FALSE, recursive = TRUE)
     pdf(dir_output, width = width, height = height)
   }

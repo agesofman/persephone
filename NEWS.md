@@ -1,3 +1,7 @@
+# persephone 0.2.1
+
+* Fixed documentation bugs.
+
 # persephone 0.2.0
 
 * Changed `Persephone*` classes to `Progress*` classes.

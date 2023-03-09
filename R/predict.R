@@ -151,9 +151,63 @@ setMethod("predict",
       newdata <- rbind(newdata, pdata)
     }
   }
-  newdata <- Progress(newdata)
-  newdata <- cronus::calc_perc(newdata)
+  #newdata <- Progress(newdata)
+  newdata <- cronus::calc_cumperc(newdata)
+ # newdata <- Progress(newdata)
 
+  # Return the predicted data
+  newdata
+
+})
+
+#' @rdname predict
+setMethod("predict",
+          signature = c(object = "ProgressMRF"),
+          definition = function(object, pdata) {
+
+  # Initialize
+  newdata <- data.frame()
+
+  # Bind global variables
+  Stage <- Percentage <- NULL
+
+  pdata <- pdata %>%
+    dplyr::select(-c("CumPercentage")) %>%
+    tidyr::pivot_wider(names_from = Stage, values_from = Percentage)
+
+
+  # Model Prediction
+  mrf <- randomForestSRC::predict.rfsrc(object@model,
+                                        pdata,
+                                        membership = !(object@scaled),
+                                        seed = object@seed)
+
+  newdata <- randomForestSRC::get.mv.predicted(mrf)
+
+
+  #
+  # # Model Prediction
+  # pdata <- dplyr::select(pdata, -c("Percentage", "CumPercentage", "Stage"))
+  # pdata <- dplyr::distinct(pdata)
+  # stages <- get_stages(object)
+  # n <- nrow(pdata)
+  #
+  # # for i = 1
+  # pdata$Stage <- rep(stages[1], times = n)
+  # pdata$Percentage <- rep(1, times = n)
+  # newdata <- rbind(newdata, pdata)
+  #
+  # if (object@scaled){
+  #   for (stage in stages[-1]){
+  #     pdata$Stage <- rep(stage, times = n)
+  #     pdata$Percentage <- randomForestSRC::predict.rfsrc(object@model[[stage]], pdata)$predicted
+  #     newdata <- rbind(newdata, pdata)
+  #   }
+  # }
+  # #newdata <- Progress(newdata)
+  # newdata <- cronus::calc_cumperc(newdata)
+  # # newdata <- Progress(newdata)
+  #
   # Return the predicted data
   newdata
 
