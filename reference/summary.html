@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">persephone</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,14 +92,14 @@
 <span class="r-in"><span><span class="va">object1</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressBM"</span>,</span></span>
 <span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
 <span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Corn"</span>,</span></span>
-<span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Corn</span>,</span></span>
+<span class="r-in"><span>               data <span class="op">=</span> <span class="va">data_progress</span><span class="op">$</span><span class="va">Corn</span>,</span></span>
 <span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"CumPercentage ~ Time + agdd"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create another model</span></span></span>
 <span class="r-in"><span><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">"ProgressCLM"</span>,</span></span>
 <span class="r-in"><span>               region <span class="op">=</span> <span class="va">region</span>,</span></span>
 <span class="r-in"><span>               crop <span class="op">=</span> <span class="st">"Soybeans"</span>,</span></span>
-<span class="r-in"><span>               data <span class="op">=</span> <span class="va">progress_ne</span><span class="op">$</span><span class="va">Soybeans</span>,</span></span>
+<span class="r-in"><span>               data <span class="op">=</span> <span class="va">data_progress</span><span class="op">$</span><span class="va">Soybeans</span>,</span></span>
 <span class="r-in"><span>               formula <span class="op">=</span> <span class="st">"Stage ~ Time + agdd + adayl"</span><span class="op">)</span> <span class="co"># ProgressModel</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Concatenate the models</span></span></span>
@@ -112,17 +112,17 @@
 <span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">object</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span>, seasons <span class="op">=</span> <span class="fl">2002</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Predict</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="predict.html">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">progress_ne</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="predict.html">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">data_progress</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Evaluate</span></span></span>
-<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="crossval.html">crossval</a></span><span class="op">(</span><span class="va">object</span>, maxsam <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluate.html">evaluate</a></span><span class="op">(</span><span class="va">object</span>, maxsam <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_metrics</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Summarize</span></span></span>
 <span class="r-in"><span><span class="fu">summary</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Report</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="report.html">report</a></span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">"example_report"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="report.html">report</a></span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">"example_report"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
